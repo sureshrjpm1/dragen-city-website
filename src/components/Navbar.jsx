@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, ArrowUpRight, Map, X, ZoomIn, ZoomOut, Download } from 'lucide-react';
+import { MapPin, ArrowUpRight, Map, X, ZoomIn, ZoomOut, Download, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const navLinks = [
   { label: 'Home', href: '#home', zh: '首页', img: 'https://images.unsplash.com/photo-1533669955142-6a73332af4db?w=1600&q=90&fit=crop' },
@@ -52,6 +53,7 @@ const socials = [
 
 
 export default function Navbar() {
+  const { isDark, toggle: toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState(null);
@@ -101,9 +103,9 @@ export default function Navbar() {
         {/* Scrolled: frosted bar with red accent bottom */}
         <motion.div
           animate={{
-            backgroundColor: scrolled ? 'rgba(10,10,10,0.55)' : 'rgba(0,0,0,0)',
+            backgroundColor: scrolled ? (isDark ? 'rgba(10,10,10,0.55)' : 'rgba(250,249,247,0.65)') : 'rgba(0,0,0,0)',
             backdropFilter: scrolled ? 'blur(20px) saturate(1.4)' : 'blur(0px) saturate(1)',
-            borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(255,255,255,0)',
+            borderBottom: scrolled ? (isDark ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(0,0,0,0.08)') : '1px solid rgba(255,255,255,0)',
           }}
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           className="relative"
@@ -172,6 +174,19 @@ export default function Navbar() {
                   Mall Map
                 </button>
 
+                {/* Theme toggle */}
+                <button
+                  onClick={toggleTheme}
+                  className={`w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 ${
+                    scrolled
+                      ? isDark ? 'bg-white/10 hover:bg-white/15 text-white/70 hover:text-white' : 'bg-black/5 hover:bg-black/10 text-black/50 hover:text-black'
+                      : 'bg-white/10 hover:bg-white/15 text-white/70 hover:text-white'
+                  }`}
+                  aria-label="Toggle theme"
+                >
+                  {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                </button>
+
                 {/* Language toggle */}
                 <button
                   onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
@@ -179,13 +194,17 @@ export default function Navbar() {
                   aria-label="Toggle language"
                 >
                   <span className={`text-sm font-semibold tracking-wide transition-colors duration-300 ${
-                    lang === 'en' ? 'text-white' : 'text-white/30 hover:text-white/50'
+                    lang === 'en'
+                      ? scrolled && !isDark ? 'text-black' : 'text-white'
+                      : scrolled && !isDark ? 'text-black/30 hover:text-black/50' : 'text-white/30 hover:text-white/50'
                   }`}>
                     EN
                   </span>
-                  <span className="text-white/15 text-xs select-none">/</span>
+                  <span className={`text-xs select-none ${scrolled && !isDark ? 'text-black/15' : 'text-white/15'}`}>/</span>
                   <span className={`text-sm font-semibold transition-colors duration-300 ${
-                    lang === 'ar' ? 'text-white' : 'text-white/30 hover:text-white/50'
+                    lang === 'ar'
+                      ? scrolled && !isDark ? 'text-black' : 'text-white'
+                      : scrolled && !isDark ? 'text-black/30 hover:text-black/50' : 'text-white/30 hover:text-white/50'
                   }`}>
                     عربي
                   </span>
@@ -194,7 +213,11 @@ export default function Navbar() {
                 {/* Menu trigger */}
                 <button
                   onClick={() => setMenuOpen(!menuOpen)}
-                  className="group flex items-center gap-3 pl-4 pr-5 py-3 rounded-full text-white hover:text-white transition-all duration-300 cursor-pointer hover:bg-white/8"
+                  className={`group flex items-center gap-3 pl-4 pr-5 py-3 rounded-full transition-all duration-300 cursor-pointer ${
+                    scrolled && !isDark
+                      ? 'text-black hover:text-black hover:bg-black/5'
+                      : 'text-white hover:text-white hover:bg-white/8'
+                  }`}
                   aria-label="Toggle menu"
                 >
                   <div className="w-5.5 h-4.5 flex flex-col justify-center gap-1.5 relative">
@@ -243,7 +266,7 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6 }}
-              className="absolute inset-0 bg-[#050505]/97 backdrop-blur-3xl"
+              className={`absolute inset-0 backdrop-blur-3xl ${isDark ? 'bg-[#050505]/97' : 'bg-[#faf9f7]/97'}`}
             />
 
             {/* Grain texture */}
@@ -259,10 +282,10 @@ export default function Navbar() {
             />
 
             {/* ─── Vertical Split Layout ─── */}
-            <div className="relative h-full flex flex-col lg:flex-row pt-24 sm:pt-28 lg:pt-0 overflow-hidden">
+            <div className="relative h-full flex flex-col lg:flex-row pt-24 sm:pt-28 overflow-hidden">
 
               {/* LEFT PANEL: Navigation (60%) */}
-              <div className="flex-1 lg:w-[60%] flex flex-col justify-center px-6 sm:px-10 md:px-16 lg:px-20 pb-8 lg:pb-0 overflow-y-auto scrollbar-hide">
+              <div className="w-full lg:w-[60%] lg:shrink-0 flex flex-col justify-center px-6 sm:px-10 md:px-16 lg:px-20 pb-8 lg:pb-0 overflow-y-auto scrollbar-hide">
                 <div className="max-w-175">
                   <motion.p
                     initial={{ opacity: 0, y: 20 }}
@@ -296,10 +319,10 @@ export default function Navbar() {
                           className="group flex items-center gap-4 sm:gap-6 py-4 sm:py-5 lg:py-6 relative overflow-hidden"
                         >
                           {/* Link label */}
-                          <span className={`text-3xl sm:text-4xl md:text-5xl lg:text-[56px] xl:text-[64px] font-display font-bold tracking-tight transition-all duration-700 ease-out ${
+                          <span className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[56px] font-display font-bold tracking-tight transition-all duration-700 ease-out ${
                             hoveredLink !== null && hoveredLink !== i
-                              ? 'text-white/10 translate-x-0'
-                              : 'text-white/90 group-hover:text-white group-hover:translate-x-3'
+                              ? isDark ? 'text-white/10 translate-x-0' : 'text-black/10 translate-x-0'
+                              : isDark ? 'text-white/90 group-hover:text-white group-hover:translate-x-3' : 'text-black/85 group-hover:text-black group-hover:translate-x-3'
                           }`}>
                             {link.label}
                           </span>
@@ -343,7 +366,7 @@ export default function Navbar() {
                     className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-8 mt-4"
                   >
                     <div className="flex items-center gap-3">
-                      <p className="text-[10px] text-white/15">
+                      <p className={`text-[10px] ${isDark ? 'text-white/15' : 'text-black/20'}`}>
                         &copy; 2026 Dragon City Bahrain
                       </p>
                       <span className="font-chinese text-xs text-dragon/15">龙城巴林</span>
@@ -354,7 +377,9 @@ export default function Navbar() {
                         <a
                           key={s.name}
                           href={s.url}
-                          className="w-9 h-9 rounded-full bg-white/8 border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-dragon/15 hover:border-dragon/30 transition-all duration-300"
+                          className={`w-9 h-9 rounded-full flex items-center justify-center hover:bg-dragon/15 hover:border-dragon/30 transition-all duration-300 ${
+                            isDark ? 'bg-white/8 border border-white/10 text-white/80 hover:text-white' : 'bg-black/5 border border-black/10 text-black/60 hover:text-black'
+                          }`}
                           title={s.name}
                         >
                           {s.icon}
@@ -371,7 +396,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 40 }}
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                className="hidden lg:flex lg:w-[40%] relative flex-col"
+                className="hidden lg:flex lg:w-[40%] lg:shrink-0 relative flex-col overflow-hidden"
               >
                 {/* Vertical divider thread */}
                 <div className="absolute left-0 top-0 bottom-0 w-px bg-linear-to-b from-transparent via-dragon/20 to-transparent" />
@@ -392,9 +417,9 @@ export default function Navbar() {
                   </AnimatePresence>
 
                   {/* Overlays */}
-                  <div className="absolute inset-0 bg-linear-to-l from-transparent via-transparent to-[#050505]/80" />
-                  <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/30 to-transparent" />
-                  <div className="absolute inset-0 bg-linear-to-b from-[#050505]/60 via-transparent to-transparent" />
+                  <div className={`absolute inset-0 bg-linear-to-l from-transparent via-transparent ${isDark ? 'to-[#050505]/80' : 'to-[#faf9f7]/80'}`} />
+                  <div className={`absolute inset-0 bg-linear-to-t ${isDark ? 'from-[#050505] via-[#050505]/30' : 'from-[#faf9f7] via-[#faf9f7]/30'} to-transparent`} />
+                  <div className={`absolute inset-0 bg-linear-to-b ${isDark ? 'from-[#050505]/60' : 'from-[#faf9f7]/60'} via-transparent to-transparent`} />
 
                   {/* Chinese pattern overlay */}
                   <div

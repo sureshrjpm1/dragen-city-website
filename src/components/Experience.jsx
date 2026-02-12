@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { UtensilsCrossed, ShoppingBag, Sparkles, ParkingCircle, Wifi, Shield, Sun, Baby } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const experiences = [
   {
@@ -39,16 +40,17 @@ const amenities = [
 ];
 
 export default function Experience() {
+  const { isDark } = useTheme();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
     <section className="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden" ref={ref}>
       <div className="absolute inset-0 chinese-pattern" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+      <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent ${isDark ? 'via-white/10' : 'via-black/10'} to-transparent`} />
 
       {/* Large Chinese watermark */}
-      <div className="absolute -top-10 -right-20 font-chinese text-[350px] text-white/[0.012] leading-none select-none pointer-events-none hidden lg:block">
+      <div className={`absolute -top-10 -right-20 font-chinese text-[350px] ${isDark ? 'text-white/[0.012]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
         体验
       </div>
 
@@ -71,10 +73,10 @@ export default function Experience() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-7xl font-display font-bold text-white"
+              className={`text-4xl md:text-5xl lg:text-7xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
             >
               Shop. Dine.{' '}
-              <span className="text-white/25">Explore.</span>
+              <span className={isDark ? 'text-white/25' : 'text-black/25'}>Explore.</span>
             </motion.h2>
           </div>
 
@@ -82,7 +84,7 @@ export default function Experience() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-white/40 max-w-md text-sm md:text-base leading-relaxed"
+            className={`${isDark ? 'text-white/40' : 'text-black/45'} max-w-md text-sm md:text-base leading-relaxed`}
           >
             More than a shopping destination — Dragon City is a cultural experience where
             East meets West in the heart of Bahrain.
@@ -164,11 +166,11 @@ export default function Experience() {
                   initial={{ opacity: 0, y: 15 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.7 + i * 0.05 }}
-                  className="group flex flex-col items-center text-center p-5 rounded-2xl border border-white/5 hover:border-gold/20 hover:bg-gold/[0.03] transition-all duration-500"
+                  className={`group flex flex-col items-center text-center p-5 rounded-2xl border ${isDark ? 'border-white/5' : 'border-black/5'} hover:border-gold/20 hover:bg-gold/[0.03] transition-all duration-500`}
                 >
                   <Icon className="w-6 h-6 text-gold/40 group-hover:text-gold mb-3 transition-colors" />
-                  <p className="text-xs font-semibold text-white/70 mb-0.5">{a.label}</p>
-                  <p className="text-[10px] text-white/25">{a.desc}</p>
+                  <p className={`text-xs font-semibold ${isDark ? 'text-white/70' : 'text-black/65'} mb-0.5`}>{a.label}</p>
+                  <p className={`text-[10px] ${isDark ? 'text-white/25' : 'text-black/25'}`}>{a.desc}</p>
                 </motion.div>
               );
             })}

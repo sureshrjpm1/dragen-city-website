@@ -1,8 +1,10 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { MapPin, Navigation, Clock, ExternalLink, Map } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 export default function LocationHours() {
+  const { isDark } = useTheme();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -27,7 +29,7 @@ export default function LocationHours() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-7xl font-display font-bold text-white"
+            className={`text-4xl md:text-5xl lg:text-7xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
           >
             Visit Us
           </motion.h2>

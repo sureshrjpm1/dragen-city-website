@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const categories = [
   {
@@ -62,12 +63,13 @@ const categories = [
 ];
 
 export default function Categories() {
+  const { isDark } = useTheme();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
     <section id="shops" className="relative py-32 overflow-hidden" ref={ref}>
-      <div className="absolute inset-0 bg-[#080808]" />
+      <div className={`absolute inset-0 ${isDark ? 'bg-[#080808]' : 'bg-[#f5f4f2]'}`} />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-dragon/20 to-transparent" />
 
       <div className="relative px-6 md:px-12 lg:px-20">
@@ -90,10 +92,10 @@ export default function Categories() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className="text-4xl md:text-5xl lg:text-7xl font-display font-bold text-white"
+                className={`text-4xl md:text-5xl lg:text-7xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
               >
                 Explore Our{' '}
-                <span className="text-white/30">Categories</span>
+                <span className={isDark ? 'text-white/30' : 'text-black/25'}>Categories</span>
               </motion.h2>
             </div>
 
@@ -102,7 +104,7 @@ export default function Categories() {
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
               href="#"
-              className="group flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 text-white/60 text-sm font-medium hover:border-dragon/30 hover:text-white transition-all"
+              className={`group flex items-center gap-3 px-6 py-3 rounded-full border ${isDark ? 'border-white/10 text-white/60 hover:text-white' : 'border-black/10 text-black/55 hover:text-[#1a1a1a]'} text-sm font-medium hover:border-dragon/30 transition-all`}
             >
               View all stores
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

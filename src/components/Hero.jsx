@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, Play, Pause } from "lucide-react";
-import bgVideo from "../assets/bg_video.mp4";
+import { useTheme } from '../context/ThemeContext';
 
 const slides = [
   {
-    video: bgVideo,
+    video: "/videos/hero-video.mp4",
     image: "https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?w=1920&q=80",
     title: "Dragon City",
     subtitle: "Bahrain",
@@ -43,6 +43,7 @@ const SLIDE_DURATION = 6000;
 const SWIPE_THRESHOLD = 50;
 
 export default function Hero() {
+  const { isDark } = useTheme();
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
   const [isPaused, setIsPaused] = useState(false);
@@ -57,7 +58,6 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   const nextSlide = useCallback(() => {
@@ -112,7 +112,8 @@ export default function Hero() {
       setVideoPlaying(true);
       setIsPaused(false);
       if (videoRef.current) {
-        videoRef.current.currentTime = 36.8;
+        videoRef.current.currentTime = 0;
+
         videoRef.current.play().catch(() => {});
       }
     }
@@ -171,24 +172,24 @@ export default function Hero() {
               loop
               playsInline
               onLoadedMetadata={(e) => {
-                e.target.currentTime = 37.5;
+                e.target.currentTime = 0;
+
               }}
               className="w-full h-full object-cover"
             />
           ) : (
-            <motion.img style={{ y }} src={slide.image} alt={slide.title} className="w-full h-[120%] object-cover" />
+            <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
           )}
         </motion.div>
       </AnimatePresence>
 
       {/* Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/15" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-black/20" />
       {/* Top vignette — blends navbar area into the image */}
       <div
         className="absolute inset-x-0 top-0 h-105 pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 18%, rgba(0,0,0,0.18) 38%, rgba(0,0,0,0.08) 58%, rgba(0,0,0,0.02) 78%, transparent 100%)',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 18%, rgba(0,0,0,0.35) 38%, rgba(0,0,0,0.18) 58%, rgba(0,0,0,0.06) 78%, transparent 100%)',
         }}
       />
 
@@ -238,10 +239,10 @@ export default function Hero() {
         <span className="text-xs text-white/30 tracking-widest">/ {String(slides.length).padStart(2, "0")}</span>
       </motion.div>
 
-      {/* Main content - bottom area */}
-      <motion.div style={{ opacity }} className="absolute bottom-0 left-0 right-0 z-10">
-        <div className="px-6 md:px-12 lg:px-20 pb-12 md:pb-16">
-          <div className="max-w-350 mx-auto">
+      {/* Main content - positioned at bottom */}
+      <motion.div style={{ opacity }} className="absolute bottom-0 left-0 right-0 z-10 pb-10 md:pb-14">
+        <div className="w-full px-6 md:px-12 lg:px-20">
+          <div className="max-w-350 mx-auto relative">
             {/* Tag */}
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
@@ -255,7 +256,7 @@ export default function Hero() {
                 <div className="w-8 md:w-12 h-px bg-linear-to-r from-dragon to-gold" />
                 <span
                   className="text-xs md:text-sm tracking-[0.3em] uppercase text-dragon font-semibold"
-                  style={{ textShadow: '0 0 12px rgba(196,30,42,0.5), 0 1px 4px rgba(0,0,0,0.6)' }}
+                  style={{ textShadow: '0 0 12px rgba(203,51,59,0.5), 0 1px 4px rgba(0,0,0,0.6)' }}
                 >
                   {slide.tag}
                 </span>
@@ -273,20 +274,16 @@ export default function Hero() {
                 transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
                 className="mb-4 md:mb-6"
               >
-                <h1 className={`font-brush font-bold leading-[0.9] tracking-tight text-white ${
-                  isVideoSlide
-                    ? 'text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[120px]'
-                    : 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[90px]'
-                }`}>{slide.title}</h1>
                 <h1
-                  className={`font-brush font-bold leading-[0.9] tracking-tight ${
-                    isVideoSlide
-                      ? 'text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[120px]'
-                      : 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[90px]'
-                  }`}
+                  className="font-brush font-bold leading-[0.9] tracking-tight text-white text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[90px]"
+                  style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5), 0 4px 40px rgba(0,0,0,0.3)' }}
+                >{slide.title}</h1>
+                <h1
+                  className="font-brush font-bold leading-[0.9] tracking-tight text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[90px]"
                   style={{
                     color: "transparent",
-                    WebkitTextStroke: "1.5px rgba(255,255,255,0.25)",
+                    WebkitTextStroke: "1.5px rgba(255,255,255,0.5)",
+                    filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.4))",
                   }}
                 >
                   {slide.subtitle}
@@ -294,72 +291,70 @@ export default function Hero() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Bottom row: description + CTA + slide navigation */}
-            <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 md:gap-8">
-              {/* Description */}
-              <AnimatePresence mode="wait" custom={direction}>
-                <motion.p
-                  key={`desc-${current}`}
-                  initial={{ opacity: 0, x: direction * 40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: direction * -20 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="text-xs sm:text-sm md:text-base text-white/50 max-w-lg leading-relaxed"
-                >
-                  {slide.desc}
-                </motion.p>
-              </AnimatePresence>
+            {/* Description + CTA */}
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.p
+                key={`desc-${current}`}
+                initial={{ opacity: 0, x: direction * 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: direction * -20 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-xs sm:text-sm md:text-base text-white/80 max-w-lg leading-relaxed mb-6 md:mb-8"
+                style={{ textShadow: '0 1px 8px rgba(0,0,0,0.5), 0 2px 16px rgba(0,0,0,0.3)' }}
+              >
+                {slide.desc}
+              </motion.p>
+            </AnimatePresence>
 
-              {/* CTA + Play/Pause + Nav */}
-              <div className="flex items-center gap-3 sm:gap-6 flex-wrap" onPointerDown={(e) => e.stopPropagation()}>
-                <a
-                  href="#about"
-                  className="group flex items-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 sm:py-3.5 bg-dragon hover:bg-dragon-light text-white text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 hover:shadow-xl hover:shadow-dragon/30"
-                >
-                  Explore
-                  <ArrowDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-y-0.5 transition-transform" />
-                </a>
-
-                {/* Play / Pause button - only visible on video slides */}
-                {isVideoSlide && (
-                  <button
-                    onClick={toggleVideo}
-                    className={`group w-10 h-10 sm:w-12 sm:h-12 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
-                      videoPlaying ? "border-dragon/50 bg-dragon/10 hover:bg-dragon/20" : "border-white/30 bg-white/5 hover:border-dragon/50 hover:bg-dragon/10"
-                    }`}
-                    title={videoPlaying ? "Pause video" : "Play video"}
-                  >
-                    {videoPlaying ? (
-                      <Pause className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-dragon transition-colors" />
-                    ) : (
-                      <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/70 group-hover:text-dragon ml-0.5 transition-colors" />
-                    )}
-                  </button>
-                )}
-
-                {/* Slide dots */}
-                <div className="flex items-center gap-2 ml-1 sm:ml-4">
-                  {slides.map((_, i) => (
-                    <button key={i} onClick={() => goToSlide(i)} className="relative cursor-pointer group/dot">
-                      <div className={`h-1 rounded-full transition-all duration-500 ${i === current ? "w-8 sm:w-12 bg-white/30" : "w-4 sm:w-6 bg-white/10 hover:bg-white/20"}`} />
-                      {i === current && (
-                        <div
-                          key={`progress-${current}`}
-                          className="absolute top-0 left-0 h-1 rounded-full bg-dragon origin-left"
-                          style={{
-                            animation: isPaused ? "none" : `slide-progress ${slides[current].video ? 180000 : SLIDE_DURATION}ms linear`,
-                            animationFillMode: "forwards",
-                          }}
-                        />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <a
+              href="#about"
+              className="group inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 sm:py-3.5 bg-dragon hover:bg-dragon-light text-white text-xs sm:text-sm font-semibold rounded-full transition-all duration-300 hover:shadow-xl hover:shadow-dragon/30"
+            >
+              Explore
+              <ArrowDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-y-0.5 transition-transform" />
+            </a>
           </div>
         </div>
       </motion.div>
+
+      {/* Carousel dots + Play/Pause — pinned bottom-right */}
+      <div className="absolute bottom-10 md:bottom-14 right-6 md:right-12 lg:right-20 z-10 flex items-center gap-3 sm:gap-4" onPointerDown={(e) => e.stopPropagation()}>
+        {/* Slide dots */}
+        <div className="flex items-center gap-2">
+          {slides.map((_, i) => (
+            <button key={i} onClick={() => goToSlide(i)} className="relative cursor-pointer group/dot">
+              <div className={`h-1 rounded-full transition-all duration-500 ${i === current ? "w-8 sm:w-12 bg-white/30" : "w-4 sm:w-6 bg-white/10 hover:bg-white/20"}`} />
+              {i === current && (
+                <div
+                  key={`progress-${current}`}
+                  className="absolute top-0 left-0 h-1 rounded-full bg-dragon origin-left"
+                  style={{
+                    animation: isPaused ? "none" : `slide-progress ${slides[current].video ? 180000 : SLIDE_DURATION}ms linear`,
+                    animationFillMode: "forwards",
+                  }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Video play/pause */}
+        {isVideoSlide && (
+          <button
+            onClick={toggleVideo}
+            className={`group w-10 h-10 sm:w-12 sm:h-12 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
+              videoPlaying ? "border-dragon/50 bg-dragon/10 hover:bg-dragon/20" : "border-white/30 bg-white/5 hover:border-dragon/50 hover:bg-dragon/10"
+            }`}
+            title={videoPlaying ? "Pause video" : "Play video"}
+          >
+            {videoPlaying ? (
+              <Pause className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-dragon transition-colors" />
+            ) : (
+              <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/70 group-hover:text-dragon ml-0.5 transition-colors" />
+            )}
+          </button>
+        )}
+      </div>
 
       {/* Scroll indicator - hidden on mobile */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2">

@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowUpRight, Calendar } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const events = [
   {
@@ -44,14 +45,15 @@ const news = [
 export default function Events() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const { isDark } = useTheme();
 
   return (
     <section className="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden" ref={ref}>
-      <div className="absolute inset-0 bg-[#070707]" />
+      <div className={`absolute inset-0 ${isDark ? 'bg-[#070707]' : 'bg-[#f5f4f2]'}`} />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-dragon/20 to-transparent" />
 
       {/* Chinese watermark */}
-      <div className="absolute bottom-20 right-10 font-chinese text-[180px] text-white/[0.015] leading-none select-none pointer-events-none hidden lg:block">
+      <div className={`absolute bottom-20 right-10 font-chinese text-[180px] ${isDark ? 'text-white/[0.015]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
         活动
       </div>
 
@@ -75,7 +77,7 @@ export default function Events() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className="text-4xl md:text-5xl lg:text-7xl font-display font-bold text-white"
+                className={`text-4xl md:text-5xl lg:text-7xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
               >
                 What's <span className="text-gradient-dragon">Happening</span>
               </motion.h2>
@@ -86,7 +88,7 @@ export default function Events() {
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
               href="#"
-              className="group flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 text-white/60 text-sm font-medium hover:border-dragon/30 hover:text-white transition-all"
+              className={`group flex items-center gap-3 px-6 py-3 rounded-full border ${isDark ? 'border-white/10 text-white/60 hover:text-white' : 'border-black/10 text-black/55 hover:text-[#1a1a1a]'} text-sm font-medium hover:border-dragon/30 transition-all`}
             >
               View all events
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -187,18 +189,18 @@ export default function Events() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.6 + i * 0.1 }}
-                className="group flex gap-4 p-4 rounded-2xl border border-white/5 hover:border-white/10 hover:bg-white/[0.02] transition-all duration-300"
+                className={`group flex gap-4 p-4 rounded-2xl border ${isDark ? 'border-white/5 hover:border-white/10 hover:bg-white/[0.02]' : 'border-black/5 hover:border-black/10 hover:bg-black/[0.03]'} transition-all duration-300`}
               >
                 <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0">
                   <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] text-white/30 mb-2">{item.date}</p>
-                  <h4 className="text-sm font-semibold text-white/70 group-hover:text-white transition-colors line-clamp-3 leading-snug">
+                  <p className={`text-[10px] ${isDark ? 'text-white/30' : 'text-black/25'} mb-2`}>{item.date}</p>
+                  <h4 className={`text-sm font-semibold ${isDark ? 'text-white/70 group-hover:text-white' : 'text-black/65 group-hover:text-[#1a1a1a]'} transition-colors line-clamp-3 leading-snug`}>
                     {item.title}
                   </h4>
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-white/10 group-hover:text-dragon flex-shrink-0 mt-1 transition-colors" />
+                <ArrowUpRight className={`w-4 h-4 ${isDark ? 'text-white/10' : 'text-black/10'} group-hover:text-dragon flex-shrink-0 mt-1 transition-colors`} />
               </motion.a>
             ))}
           </div>

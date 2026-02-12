@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Send, ArrowUpRight, MapPin, Clock } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const navLinks = [
   { label: 'Home', href: '#home' },
@@ -61,6 +62,7 @@ export default function Footer() {
   const isInView = useInView(ref, { once: true, margin: '-50px' });
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const { isDark } = useTheme();
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -76,7 +78,9 @@ export default function Footer() {
       <div
         className="relative"
         style={{
-          background: 'linear-gradient(to bottom, #050505 0%, #0a0406 15%, #120508 40%, #1a060a 65%, #22070c 85%, #2a080e 100%)',
+          background: isDark
+            ? 'linear-gradient(to bottom, #050505 0%, #0a0406 15%, #120508 40%, #1a060a 65%, #22070c 85%, #2a080e 100%)'
+            : 'linear-gradient(to bottom, #f5f4f2 0%, #ede8e4 15%, #e8e0da 40%, #e2d8d0 65%, #ddd0c8 85%, #d8c8be 100%)',
         }}
       >
         {/* Subtle pattern bg */}
@@ -88,7 +92,7 @@ export default function Footer() {
         {/* Radial red glow from bottom */}
         <div
           className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-96 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at center bottom, rgba(196,30,42,0.08) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(ellipse at center bottom, rgba(203,51,59,0.08) 0%, transparent 70%)' }}
         />
 
         <div className="relative px-6 md:px-12 lg:px-20">
@@ -99,7 +103,7 @@ export default function Footer() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8 }}
-              className="pt-24 md:pt-32 pb-16 md:pb-20 border-b border-white/6"
+              className={`pt-24 md:pt-32 pb-16 md:pb-20 border-b ${isDark ? 'border-white/6' : 'border-black/8'}`}
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-end">
                 {/* Left: Big heading */}
@@ -107,17 +111,17 @@ export default function Footer() {
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-px bg-linear-to-r from-dragon to-gold" />
                     <span className="text-[10px] tracking-[0.4em] uppercase text-dragon/60 font-medium">Stay Connected</span>
-                    <span className="font-chinese text-dragon/25 text-xs">保持联系</span>
+                    <span className={`font-chinese text-xs ${isDark ? 'text-dragon/25' : 'text-dragon/25'}`}>保持联系</span>
                   </div>
-                  <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white leading-tight">
+                  <h2 className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-tight ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}>
                     Don't miss out on<br />
-                    <span className="text-white/30">what's happening</span>
+                    <span className={isDark ? 'text-white/30' : 'text-black/25'}>{`what's happening`}</span>
                   </h2>
                 </div>
 
                 {/* Right: Newsletter */}
                 <div className="lg:max-w-md lg:ml-auto">
-                  <p className="text-sm text-white/40 mb-5 leading-relaxed">
+                  <p className={`text-sm mb-5 leading-relaxed ${isDark ? 'text-white/40' : 'text-black/50'}`}>
                     Subscribe to our newsletter for exclusive offers, new store openings, and upcoming events at Dragon City Bahrain.
                   </p>
                   <form onSubmit={handleSubscribe}>
@@ -128,7 +132,11 @@ export default function Footer() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter your email"
                         required
-                        className="w-full px-5 py-4 pr-14 bg-white/4 border border-white/10 rounded-xl text-sm text-white placeholder-white/30 focus:outline-none focus:border-dragon/40 focus:bg-white/6 transition-all duration-300"
+                        className={`w-full px-5 py-4 pr-14 border rounded-xl text-sm focus:outline-none focus:border-dragon/40 transition-all duration-300 ${
+                          isDark
+                            ? 'bg-white/4 border-white/10 text-white placeholder-white/30 focus:bg-white/6'
+                            : 'bg-black/4 border-black/10 text-[#1a1a1a] placeholder-black/30 focus:bg-black/6'
+                        }`}
                       />
                       <button
                         type="submit"
@@ -157,7 +165,7 @@ export default function Footer() {
               initial={{ opacity: 0, y: 25 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="py-14 md:py-16 border-b border-white/6"
+              className={`py-14 md:py-16 border-b ${isDark ? 'border-white/6' : 'border-black/8'}`}
             >
               <div className="grid grid-cols-2 md:grid-cols-12 gap-10 md:gap-8">
                 {/* Logo + Info */}
@@ -170,14 +178,14 @@ export default function Footer() {
                   <div className="space-y-3 mb-6">
                     <div className="flex items-start gap-2.5">
                       <MapPin className="w-3.5 h-3.5 text-dragon/60 mt-0.5 shrink-0" />
-                      <p className="text-xs text-white/40 leading-relaxed">
+                      <p className={`text-xs leading-relaxed ${isDark ? 'text-white/40' : 'text-black/50'}`}>
                         Building 4-45, Road 5617, Block 456<br />
                         Diyar Al Muharraq, Bahrain
                       </p>
                     </div>
                     <div className="flex items-start gap-2.5">
                       <Clock className="w-3.5 h-3.5 text-dragon/60 mt-0.5 shrink-0" />
-                      <p className="text-xs text-white/40 leading-relaxed">
+                      <p className={`text-xs leading-relaxed ${isDark ? 'text-white/40' : 'text-black/50'}`}>
                         Sat – Wed: 10 AM – 10 PM<br />
                         Thu – Fri: 10 AM – 12 AM
                       </p>
@@ -190,7 +198,11 @@ export default function Footer() {
                       <a
                         key={s.name}
                         href={s.url}
-                        className="w-9 h-9 rounded-lg bg-white/4 border border-white/6 flex items-center justify-center text-white/40 hover:text-white hover:border-dragon/30 hover:bg-dragon/10 transition-all duration-300"
+                        className={`w-9 h-9 rounded-lg flex items-center justify-center hover:border-dragon/30 hover:bg-dragon/10 transition-all duration-300 ${
+                          isDark
+                            ? 'bg-white/4 border border-white/6 text-white/40 hover:text-white'
+                            : 'bg-black/4 border border-black/8 text-black/40 hover:text-black'
+                        }`}
                         title={s.name}
                       >
                         {s.icon}
@@ -201,7 +213,7 @@ export default function Footer() {
 
                 {/* Navigation */}
                 <div className="col-span-1 md:col-span-2">
-                  <h6 className="text-[10px] font-semibold text-white/25 tracking-[0.3em] uppercase mb-5">
+                  <h6 className={`text-[10px] font-semibold tracking-[0.3em] uppercase mb-5 ${isDark ? 'text-white/25' : 'text-black/20'}`}>
                     Navigate
                   </h6>
                   <ul className="space-y-3">
@@ -209,7 +221,9 @@ export default function Footer() {
                       <li key={link.label}>
                         <a
                           href={link.href}
-                          className="group flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors duration-300"
+                          className={`group flex items-center gap-2 text-sm transition-colors duration-300 ${
+                            isDark ? 'text-white/50 hover:text-white' : 'text-black/55 hover:text-black'
+                          }`}
                         >
                           {link.label}
                           <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-50 group-hover:translate-x-0 transition-all duration-300" />
@@ -221,7 +235,7 @@ export default function Footer() {
 
                 {/* Categories */}
                 <div className="col-span-1 md:col-span-2">
-                  <h6 className="text-[10px] font-semibold text-white/25 tracking-[0.3em] uppercase mb-5">
+                  <h6 className={`text-[10px] font-semibold tracking-[0.3em] uppercase mb-5 ${isDark ? 'text-white/25' : 'text-black/20'}`}>
                     Categories
                   </h6>
                   <ul className="space-y-3">
@@ -229,7 +243,9 @@ export default function Footer() {
                       <li key={cat}>
                         <a
                           href="#shops"
-                          className="group flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors duration-300"
+                          className={`group flex items-center gap-2 text-sm transition-colors duration-300 ${
+                            isDark ? 'text-white/50 hover:text-white' : 'text-black/55 hover:text-black'
+                          }`}
                         >
                           {cat}
                           <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-50 group-hover:translate-x-0 transition-all duration-300" />
@@ -241,7 +257,7 @@ export default function Footer() {
 
                 {/* Quick Links */}
                 <div className="col-span-2 md:col-span-4">
-                  <h6 className="text-[10px] font-semibold text-white/25 tracking-[0.3em] uppercase mb-5">
+                  <h6 className={`text-[10px] font-semibold tracking-[0.3em] uppercase mb-5 ${isDark ? 'text-white/25' : 'text-black/20'}`}>
                     Quick Links
                   </h6>
                   <div className="grid grid-cols-2 gap-x-6 gap-y-3">
@@ -258,7 +274,9 @@ export default function Footer() {
                       <a
                         key={link.label}
                         href={link.href}
-                        className="text-sm text-white/50 hover:text-white transition-colors duration-300"
+                        className={`text-sm transition-colors duration-300 ${
+                          isDark ? 'text-white/50 hover:text-white' : 'text-black/55 hover:text-black'
+                        }`}
                       >
                         {link.label}
                       </a>
@@ -273,7 +291,7 @@ export default function Footer() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="py-10 md:py-12 border-b border-white/6 overflow-hidden"
+              className={`py-10 md:py-12 border-b overflow-hidden ${isDark ? 'border-white/6' : 'border-black/8'}`}
             >
               <div className="flex items-center justify-center gap-6">
                 <div className="hidden md:block w-16 h-px bg-linear-to-r from-transparent to-dragon/20" />
@@ -281,14 +299,14 @@ export default function Footer() {
                   className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-brush font-bold tracking-tighter text-center select-none whitespace-nowrap"
                   style={{
                     color: 'transparent',
-                    WebkitTextStroke: '1px rgba(255,255,255,0.06)',
+                    WebkitTextStroke: isDark ? '1px rgba(255,255,255,0.06)' : '1px rgba(0,0,0,0.08)',
                   }}
                 >
                   DRAGON CITY
                 </h3>
                 <div className="hidden md:block w-16 h-px bg-linear-to-l from-transparent to-dragon/20" />
               </div>
-              <p className="text-center font-chinese text-dragon/15 text-lg mt-2 select-none">龙城巴林</p>
+              <p className={`text-center font-chinese text-lg mt-2 select-none ${isDark ? 'text-dragon/15' : 'text-dragon/25'}`}>龙城巴林</p>
             </motion.div>
 
             {/* ─── Bottom bar ─── */}
@@ -296,17 +314,17 @@ export default function Footer() {
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6 text-[11px] text-white/25"
+              className={`flex flex-col sm:flex-row items-center justify-between gap-4 py-6 text-[11px] ${isDark ? 'text-white/25' : 'text-black/25'}`}
             >
               <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
                 <span>&copy; 2026 Dragon City Bahrain. All rights reserved.</span>
               </div>
               <div className="flex items-center gap-4">
-                <a href="#" className="hover:text-white/60 transition-colors">Privacy Policy</a>
-                <span className="w-px h-3 bg-white/10" />
-                <a href="#" className="hover:text-white/60 transition-colors">Terms of Use</a>
-                <span className="w-px h-3 bg-white/10" />
-                <a href="#" className="hover:text-white/60 transition-colors">Sitemap</a>
+                <a href="#" className={`transition-colors ${isDark ? 'hover:text-white/60' : 'hover:text-black/60'}`}>Privacy Policy</a>
+                <span className={`w-px h-3 ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
+                <a href="#" className={`transition-colors ${isDark ? 'hover:text-white/60' : 'hover:text-black/60'}`}>Terms of Use</a>
+                <span className={`w-px h-3 ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
+                <a href="#" className={`transition-colors ${isDark ? 'hover:text-white/60' : 'hover:text-black/60'}`}>Sitemap</a>
               </div>
             </motion.div>
 

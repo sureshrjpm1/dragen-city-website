@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const galleryImages = [
   {
@@ -38,14 +39,15 @@ const galleryImages = [
 export default function Gallery() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const { isDark } = useTheme();
 
   return (
     <section className="relative py-32 overflow-hidden" id="media">
-      <div className="absolute inset-0 bg-[#060606]" />
+      <div className={`absolute inset-0 ${isDark ? 'bg-[#060606]' : 'bg-[#f8f7f5]'}`} />
       <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-dragon/20 to-transparent" />
 
       {/* Chinese watermark */}
-      <div className="absolute top-20 left-10 font-chinese text-[200px] text-white/[0.015] leading-none select-none pointer-events-none hidden lg:block">
+      <div className={`absolute top-20 left-10 font-chinese text-[200px] ${isDark ? 'text-white/[0.015]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
         画廊
       </div>
 
@@ -69,10 +71,10 @@ export default function Gallery() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className="text-4xl md:text-5xl lg:text-7xl font-display font-bold text-white"
+                className={`text-4xl md:text-5xl lg:text-7xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
               >
                 Explore the{' '}
-                <span className="text-white/25">Experience</span>
+                <span className={isDark ? 'text-white/25' : 'text-black/25'}>Experience</span>
               </motion.h2>
             </div>
 
@@ -81,7 +83,7 @@ export default function Gallery() {
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
               href="#"
-              className="group flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 text-white/60 text-sm font-medium hover:border-dragon/30 hover:text-white transition-all"
+              className={`group flex items-center gap-3 px-6 py-3 rounded-full border ${isDark ? 'border-white/10 text-white/60 hover:text-white' : 'border-black/10 text-black/55 hover:text-[#1a1a1a]'} text-sm font-medium hover:border-dragon/30 transition-all`}
             >
               View all
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 const stats = [
   { value: 799, suffix: '+', label: 'Retail & Wholesale Shops', zh: '商店' },
@@ -45,6 +46,7 @@ function AnimatedCounter({ value, suffix = '', isInView }) {
 }
 
 export default function About() {
+  const { isDark } = useTheme();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const statsRef = useRef(null);
@@ -55,7 +57,7 @@ export default function About() {
       <div className="absolute inset-0 chinese-pattern" />
 
       {/* Decorative Chinese character */}
-      <div className="absolute top-20 right-10 font-chinese text-[280px] text-white/[0.015] leading-none select-none pointer-events-none hidden lg:block">
+      <div className={`absolute top-20 right-10 font-chinese text-[280px] ${isDark ? 'text-white/[0.015]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
         龙
       </div>
 
@@ -77,7 +79,7 @@ export default function About() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold text-white leading-[1] mb-16 max-w-4xl"
+          className={`text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'} leading-[1] mb-16 max-w-4xl`}
         >
           The Largest Trading Centre{' '}
           <span className="text-gradient-dragon">in the Kingdom</span>
@@ -92,14 +94,14 @@ export default function About() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="lg:col-span-5 flex flex-col justify-center"
           >
-            <p className="text-base md:text-lg text-white/50 leading-relaxed mb-6">
+            <p className={`text-base md:text-lg ${isDark ? 'text-white/50' : 'text-black/55'} leading-relaxed mb-6`}>
               Dragon City Bahrain (DCB) is a large-scale commercial center encapsulating
               wholesale and retail of Chinese products. Elegantly infused with Chinese
               inspired architecture, Dragon City serves as a major trading hub for
               Bahrain and the surrounding regions.
             </p>
 
-            <p className="text-base md:text-lg text-white/50 leading-relaxed mb-8">
+            <p className={`text-base md:text-lg ${isDark ? 'text-white/50' : 'text-black/55'} leading-relaxed mb-8`}>
               With a diverse range of products catering to both individual consumers
               and wholesale businessmen, Dragon City is the largest wholesale and retail
               trading centre in the Kingdom.
@@ -168,7 +170,7 @@ export default function About() {
               initial={{ opacity: 0, y: 30 }}
               animate={statsInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group relative p-6 md:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-dragon/20 hover:bg-white/[0.04] transition-all duration-500"
+              className={`group relative p-6 md:p-8 rounded-2xl ${isDark ? 'bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.04]' : 'bg-black/[0.03] border border-black/[0.08] hover:bg-black/[0.05]'} hover:border-dragon/20 transition-all duration-500`}
             >
               {/* Chinese label */}
               <span className="absolute top-3 right-4 font-chinese text-base text-dragon/10 group-hover:text-dragon/25 transition-colors duration-500">
@@ -176,7 +178,7 @@ export default function About() {
               </span>
 
               {/* Counter */}
-              <p className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-2 group-hover:text-dragon transition-colors duration-500">
+              <p className={`text-4xl md:text-5xl lg:text-6xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'} mb-2 group-hover:text-dragon transition-colors duration-500`}>
                 <AnimatedCounter
                   value={stat.value}
                   suffix={stat.suffix}
@@ -185,7 +187,7 @@ export default function About() {
               </p>
 
               {/* Label */}
-              <p className="text-xs md:text-sm text-white/40 tracking-wide">{stat.label}</p>
+              <p className={`text-xs md:text-sm ${isDark ? 'text-white/40' : 'text-black/45'} tracking-wide`}>{stat.label}</p>
 
               {/* Hover gradient */}
               <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-t from-dragon/5 to-transparent pointer-events-none" />
