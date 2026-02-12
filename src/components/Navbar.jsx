@@ -1,27 +1,63 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, MapPin, ArrowUpRight } from 'lucide-react';
+import { MapPin, ArrowUpRight, Map, X, ZoomIn, ZoomOut, Download } from 'lucide-react';
 
 const navLinks = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Shops', href: '#shops' },
-  { label: 'Media', href: '#media' },
-  { label: 'Location', href: '#location' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Home', href: '#home', zh: '首页', img: 'https://images.unsplash.com/photo-1533669955142-6a73332af4db?w=1600&q=90&fit=crop' },
+  { label: 'About', href: '#about', zh: '关于', img: 'https://images.unsplash.com/photo-1513623935135-c896b59073c1?w=1600&q=90&fit=crop' },
+  { label: 'Shops', href: '#shops', zh: '商店', img: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1600&q=90&fit=crop' },
+  { label: 'Media', href: '#media', zh: '媒体', img: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=1600&q=90&fit=crop' },
+  { label: 'Location', href: '#location', zh: '位置', img: 'https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=1600&q=90&fit=crop' },
+  { label: 'Contact', href: '#contact', zh: '联系', img: 'https://images.unsplash.com/photo-1599707367812-042e4c84a396?w=1600&q=90&fit=crop' },
 ];
 
 const socials = [
-  { name: 'Facebook', url: '#' },
-  { name: 'Instagram', url: '#' },
-  { name: 'YouTube', url: '#' },
-  { name: 'X', url: '#' },
+  {
+    name: 'Facebook',
+    url: '#',
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'Instagram',
+    url: '#',
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'YouTube',
+    url: '#',
+    icon: (
+      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+      </svg>
+    ),
+  },
+  {
+    name: 'X',
+    url: '#',
+    icon: (
+      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+    ),
+  },
 ];
+
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState(null);
+  const [activeImage, setActiveImage] = useState(0);
+  const [lang, setLang] = useState('en');
+  const [mapOpen, setMapOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -31,326 +67,490 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleEsc = (e) => {
-      if (e.key === 'Escape') {
-        setSearchOpen(false);
-        setMenuOpen(false);
-      }
+      if (e.key === 'Escape') { setMenuOpen(false); setMapOpen(false); }
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
 
-  // Lock body scroll when menu or search is open
   useEffect(() => {
-    document.body.style.overflow = menuOpen || searchOpen ? 'hidden' : '';
+    const openMap = () => setMapOpen(true);
+    document.addEventListener('open-mall-map', openMap);
+    return () => document.removeEventListener('open-mall-map', openMap);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = (menuOpen || mapOpen) ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [menuOpen, searchOpen]);
+  }, [menuOpen, mapOpen]);
+
+  const handleLinkHover = useCallback((i) => {
+    setHoveredLink(i);
+    setActiveImage(i);
+  }, []);
 
   return (
     <>
-      {/* Main navbar */}
+      {/* ─── The Red Thread Navbar ─── */}
       <motion.nav
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? 'bg-black/70 backdrop-blur-2xl shadow-2xl shadow-black/30'
-            : 'bg-transparent'
-        }`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.3 }}
+        className="fixed top-0 left-0 right-0 z-50"
       >
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20">
-            {/* Left: Logo */}
-            <a href="#home" className="relative z-10 flex items-center flex-shrink-0">
-              <img
-                src="/images/header-logo.png"
-                alt="Dragon City"
-                className="h-10 sm:h-12 md:h-14 w-auto object-contain"
-              />
-            </a>
+        {/* Scrolled: frosted bar with red accent bottom */}
+        <motion.div
+          animate={{
+            backgroundColor: scrolled ? 'rgba(10,10,10,0.55)' : 'rgba(0,0,0,0)',
+            backdropFilter: scrolled ? 'blur(20px) saturate(1.4)' : 'blur(0px) saturate(1)',
+            borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(255,255,255,0)',
+          }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          className="relative"
+        >
+          <div className="px-6 md:px-12 lg:px-20">
+            <div className={`max-w-350 mx-auto flex items-center justify-between transition-all duration-500 ${
+              scrolled ? 'h-16' : 'h-20 md:h-24'
+            }`}>
+              {/* Left: Logo */}
+              <motion.a
+                href="#home"
+                className="relative z-10 flex items-center"
+                initial={{ x: -30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <img
+                  src="/images/header-logo.png"
+                  alt="Dragon City"
+                  className={`w-auto object-contain transition-all duration-500 ${
+                    scrolled ? 'h-10 sm:h-11' : 'h-12 sm:h-14 md:h-16'
+                  }`}
+                />
+              </motion.a>
 
-            {/* Center: Desktop nav links */}
-            <div className="hidden lg:flex items-center gap-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="relative px-4 py-2 text-[13px] font-medium text-white/60 hover:text-white transition-colors duration-300 group"
+              {/* Center: The Red Thread — animated connecting line */}
+              <motion.div
+                initial={{ scaleX: 0, opacity: 0 }}
+                animate={{ scaleX: 1, opacity: 1 }}
+                transition={{ duration: 1.2, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+                className="flex-1 mx-6 md:mx-10 lg:mx-16 relative hidden sm:block origin-left"
+              >
+                {/* The thread */}
+                <div className="h-px w-full bg-linear-to-r from-dragon/40 via-dragon/15 to-dragon/40 relative">
+                  {/* Animated pulse traveling along the thread */}
+                  <div className="absolute top-0 left-0 h-px w-16 bg-linear-to-r from-transparent via-dragon/60 to-transparent animate-thread-pulse" />
+                </div>
+
+                {/* Center ornament on the thread */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <div className={`relative transition-all duration-500 ${scrolled ? 'scale-75' : 'scale-100'}`}>
+                    <div className="w-5 h-5 rotate-45 border border-dragon/30 flex items-center justify-center">
+                      <div className="w-1.5 h-1.5 bg-dragon/50 rotate-0" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Right: Actions */}
+              <motion.div
+                className="flex items-center gap-2 sm:gap-3"
+                initial={{ x: 30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                {/* Mall Map CTA — desktop */}
+                <button
+                  onClick={() => setMapOpen(true)}
+                  className={`hidden lg:flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-500 cursor-pointer ${
+                    scrolled
+                      ? 'bg-dragon text-white hover:bg-dragon-light hover:shadow-lg hover:shadow-dragon/20'
+                      : 'bg-white/10 text-white hover:bg-white/15 border border-white/10'
+                  }`}
                 >
-                  {link.label}
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-px bg-dragon group-hover:w-1/2 transition-all duration-300" />
-                </a>
-              ))}
-            </div>
+                  <Map className="w-3.5 h-3.5" />
+                  Mall Map
+                </button>
 
-            {/* Right: Actions */}
-            <div className="flex items-center gap-2 sm:gap-3">
-              {/* Search button */}
-              <button
-                onClick={() => { setSearchOpen(true); setMenuOpen(false); }}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/[0.06] transition-all duration-300 cursor-pointer"
-                title="Search"
-              >
-                <Search className="w-4 h-4" />
-              </button>
+                {/* Language toggle */}
+                <button
+                  onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}
+                  className="group flex items-center gap-1.5 cursor-pointer transition-all duration-300"
+                  aria-label="Toggle language"
+                >
+                  <span className={`text-sm font-semibold tracking-wide transition-colors duration-300 ${
+                    lang === 'en' ? 'text-white' : 'text-white/30 hover:text-white/50'
+                  }`}>
+                    EN
+                  </span>
+                  <span className="text-white/15 text-xs select-none">/</span>
+                  <span className={`text-sm font-semibold transition-colors duration-300 ${
+                    lang === 'ar' ? 'text-white' : 'text-white/30 hover:text-white/50'
+                  }`}>
+                    عربي
+                  </span>
+                </button>
 
-              {/* Language */}
-              <button className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-white/70 text-xs font-medium hover:text-white hover:bg-white/[0.06] transition-all duration-300 cursor-pointer border border-white/[0.08]">
-                EN
-                <span className="text-white/30">|</span>
-                <span className="font-chinese text-[11px] text-white/50">中文</span>
-              </button>
-
-              {/* Mall Map - desktop only */}
-              <a
-                href="#location"
-                className="hidden lg:flex items-center gap-2 px-5 py-2.5 rounded-full bg-dragon text-white text-xs font-semibold hover:bg-dragon-light transition-all duration-300 hover:shadow-lg hover:shadow-dragon/25"
-              >
-                <MapPin className="w-3.5 h-3.5" />
-                Visit Us
-              </a>
-
-              {/* Hamburger / Close */}
-              <button
-                onClick={() => { setMenuOpen(!menuOpen); setSearchOpen(false); }}
-                className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white hover:bg-white/[0.06] transition-all duration-300 cursor-pointer lg:hidden"
-                aria-label="Toggle menu"
-              >
-                <div className="w-5 flex flex-col items-end gap-[5px]">
-                  <motion.span
-                    animate={menuOpen ? { rotate: 45, y: 7, width: 20 } : { rotate: 0, y: 0, width: 20 }}
-                    className="block h-[2px] bg-white rounded-full origin-center"
-                    transition={{ duration: 0.3 }}
-                  />
-                  <motion.span
-                    animate={menuOpen ? { opacity: 0, x: 10 } : { opacity: 1, x: 0 }}
-                    className="block h-[2px] w-3.5 bg-white/60 rounded-full"
-                    transition={{ duration: 0.2 }}
-                  />
-                  <motion.span
-                    animate={menuOpen ? { rotate: -45, y: -7, width: 20 } : { rotate: 0, y: 0, width: 14 }}
-                    className="block h-[2px] bg-white rounded-full origin-center"
-                    transition={{ duration: 0.3 }}
-                  />
-                </div>
-              </button>
-
-              {/* Desktop menu toggle (for fullscreen nav experience) */}
-              <button
-                onClick={() => { setMenuOpen(!menuOpen); setSearchOpen(false); }}
-                className="hidden lg:flex items-center gap-2 px-4 py-2.5 rounded-full text-white/60 text-xs font-medium hover:text-white hover:bg-white/[0.06] transition-all duration-300 cursor-pointer"
-              >
-                <div className="w-4 flex flex-col items-end gap-[4px]">
-                  <motion.span
-                    animate={menuOpen ? { rotate: 45, y: 6, width: 16 } : { rotate: 0, y: 0, width: 16 }}
-                    className="block h-[1.5px] bg-current rounded-full origin-center"
-                    transition={{ duration: 0.3 }}
-                  />
-                  <motion.span
-                    animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-                    className="block h-[1.5px] w-3 bg-current rounded-full"
-                    transition={{ duration: 0.2 }}
-                  />
-                  <motion.span
-                    animate={menuOpen ? { rotate: -45, y: -6, width: 16 } : { rotate: 0, y: 0, width: 10 }}
-                    className="block h-[1.5px] bg-current rounded-full origin-center"
-                    transition={{ duration: 0.3 }}
-                  />
-                </div>
-                Menu
-              </button>
+                {/* Menu trigger */}
+                <button
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  className="group flex items-center gap-3 pl-4 pr-5 py-3 rounded-full text-white hover:text-white transition-all duration-300 cursor-pointer hover:bg-white/8"
+                  aria-label="Toggle menu"
+                >
+                  <div className="w-5.5 h-4.5 flex flex-col justify-center gap-1.5 relative">
+                    <motion.span
+                      animate={menuOpen
+                        ? { rotate: 45, y: 4, width: 20 }
+                        : { rotate: 0, y: 0, width: 20 }
+                      }
+                      className="block h-[1.5px] bg-current rounded-full origin-center"
+                      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                    />
+                    <motion.span
+                      animate={menuOpen
+                        ? { rotate: -45, y: -4, width: 20 }
+                        : { rotate: 0, y: 0, width: 13 }
+                      }
+                      className="block h-[1.5px] bg-current rounded-full origin-center"
+                      transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                    />
+                  </div>
+                  <span className="text-sm font-medium tracking-wider hidden sm:inline uppercase">
+                    {menuOpen ? 'Close' : 'Menu'}
+                  </span>
+                </button>
+              </motion.div>
             </div>
           </div>
-        </div>
+
+{/* Red accent bottom border removed */}
+        </motion.div>
       </motion.nav>
 
-      {/* Full-screen menu overlay */}
+      {/* ─── Cinematic Fullscreen Menu ─── */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl"
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+            className="fixed inset-0 z-40"
           >
-            {/* Decorative background */}
-            <div className="absolute inset-0 chinese-pattern opacity-30" />
-            <div className="absolute bottom-10 right-10 font-chinese text-[200px] text-white/[0.02] leading-none select-none pointer-events-none hidden md:block">
-              龙城
-            </div>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6 }}
+              className="absolute inset-0 bg-[#050505]/97 backdrop-blur-3xl"
+            />
 
-            {/* Menu content */}
-            <div className="relative h-full flex flex-col pt-20 sm:pt-24 px-6 sm:px-10 md:px-16 lg:px-24 pb-8 overflow-y-auto">
-              <div className="flex-1 flex flex-col lg:flex-row gap-12 lg:gap-24 max-w-[1400px] mx-auto w-full">
-                {/* Nav links - large */}
-                <div className="flex-1 flex flex-col justify-center">
-                  <nav className="space-y-1 sm:space-y-2">
+            {/* Grain texture */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")', animation: 'grain 8s steps(10) infinite' }} />
+
+            {/* Red thread accent — top */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              exit={{ scaleX: 0 }}
+              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1], delay: 0.1 }}
+              className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-dragon/40 to-transparent origin-left"
+            />
+
+            {/* ─── Vertical Split Layout ─── */}
+            <div className="relative h-full flex flex-col lg:flex-row pt-24 sm:pt-28 lg:pt-0 overflow-hidden">
+
+              {/* LEFT PANEL: Navigation (60%) */}
+              <div className="flex-1 lg:w-[60%] flex flex-col justify-center px-6 sm:px-10 md:px-16 lg:px-20 pb-8 lg:pb-0 overflow-y-auto scrollbar-hide">
+                <div className="max-w-175">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                    className="text-[10px] tracking-[0.4em] uppercase text-dragon/50 mb-8 sm:mb-10"
+                  >
+                    Navigation — 导航
+                  </motion.p>
+
+                  <nav className="space-y-0">
                     {navLinks.map((link, i) => (
                       <motion.div
                         key={link.label}
-                        initial={{ opacity: 0, x: -40 }}
+                        initial={{ opacity: 0, x: -60 }}
                         animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.4, delay: 0.05 + i * 0.06 }}
+                        exit={{ opacity: 0, x: -30 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: 0.15 + i * 0.07,
+                          ease: [0.25, 0.1, 0.25, 1],
+                        }}
+                        onMouseEnter={() => handleLinkHover(i)}
+                        onMouseLeave={() => setHoveredLink(null)}
+                        className="border-b border-white/4 first:border-t"
                       >
                         <a
                           href={link.href}
                           onClick={() => setMenuOpen(false)}
-                          className="group flex items-center gap-4 py-3 sm:py-4"
+                          className="group flex items-center gap-4 sm:gap-6 py-4 sm:py-5 lg:py-6 relative overflow-hidden"
                         >
-                          <span className="text-xs text-white/15 font-mono w-6 hidden sm:inline">
-                            {String(i + 1).padStart(2, '0')}
-                          </span>
-                          <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white/80 group-hover:text-white transition-colors duration-300">
+                          {/* Link label */}
+                          <span className={`text-3xl sm:text-4xl md:text-5xl lg:text-[56px] xl:text-[64px] font-display font-bold tracking-tight transition-all duration-700 ease-out ${
+                            hoveredLink !== null && hoveredLink !== i
+                              ? 'text-white/10 translate-x-0'
+                              : 'text-white/90 group-hover:text-white group-hover:translate-x-3'
+                          }`}>
                             {link.label}
                           </span>
-                          <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 text-dragon opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
-                          <span className="flex-1 h-px bg-white/[0.04] group-hover:bg-dragon/20 transition-colors duration-500 hidden sm:block" />
+
+                          {/* Chinese character — floats in on hover */}
+                          <span className={`font-chinese text-base sm:text-lg transition-all duration-700 ease-out absolute right-12 sm:right-16 top-1/2 -translate-y-1/2 ${
+                            hoveredLink === i
+                              ? 'text-dragon/40 opacity-100 translate-x-0'
+                              : 'text-dragon/0 opacity-0 translate-x-4'
+                          }`}>
+                            {link.zh}
+                          </span>
+
+                          {/* Arrow */}
+                          <span className={`ml-auto shrink-0 transition-all duration-500 ease-out ${
+                            hoveredLink === i ? 'opacity-100 translate-x-0 rotate-0' : 'opacity-0 -translate-x-3 -rotate-45'
+                          }`}>
+                            <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 text-dragon" />
+                          </span>
+
+                          {/* Brush-stroke underline */}
+                          <span className={`absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-dragon via-dragon/60 to-transparent origin-left transition-transform duration-700 ease-out ${
+                            hoveredLink === i ? 'scale-x-100' : 'scale-x-0'
+                          }`} />
+
+                          {/* Soft red glow */}
+                          <span className={`absolute left-8 top-1/2 -translate-y-1/2 w-32 h-16 rounded-full blur-3xl transition-opacity duration-700 pointer-events-none ${
+                            hoveredLink === i ? 'bg-dragon/6 opacity-100' : 'opacity-0'
+                          }`} />
                         </a>
                       </motion.div>
                     ))}
                   </nav>
-                </div>
 
-                {/* Right sidebar info */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="lg:w-72 flex flex-col justify-end gap-8 pb-4"
-                >
-                  {/* Location */}
-                  <div>
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-dragon/60 mb-3">Location</p>
-                    <p className="text-sm text-white/60 leading-relaxed">
-                      Dragon City, Building 4-45<br />
-                      Road 5617, Block 456<br />
-                      Diyar Al Muharraq, Bahrain
-                    </p>
-                  </div>
+                  {/* Bottom info — below nav */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ delay: 0.6, duration: 0.4 }}
+                    className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-8 mt-4"
+                  >
+                    <div className="flex items-center gap-3">
+                      <p className="text-[10px] text-white/15">
+                        &copy; 2026 Dragon City Bahrain
+                      </p>
+                      <span className="font-chinese text-xs text-dragon/15">龙城巴林</span>
+                    </div>
 
-                  {/* Hours */}
-                  <div>
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-dragon/60 mb-3">Hours</p>
-                    <p className="text-sm text-white/60">
-                      Sat – Wed: 10 AM – 10 PM<br />
-                      Thu – Fri: 10 AM – 12 AM
-                    </p>
-                  </div>
-
-                  {/* Socials */}
-                  <div>
-                    <p className="text-[10px] tracking-[0.3em] uppercase text-dragon/60 mb-3">Follow</p>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex items-center gap-2">
                       {socials.map((s) => (
                         <a
                           key={s.name}
                           href={s.url}
-                          className="text-xs text-white/40 hover:text-white transition-colors"
+                          className="w-9 h-9 rounded-full bg-white/8 border border-white/10 flex items-center justify-center text-white/80 hover:text-white hover:bg-dragon/15 hover:border-dragon/30 transition-all duration-300"
+                          title={s.name}
                         >
-                          {s.name}
+                          {s.icon}
                         </a>
                       ))}
                     </div>
-                  </div>
-
-                  {/* Chinese accent */}
-                  <p className="font-chinese text-lg text-dragon/20">龙城巴林</p>
-                </motion.div>
+                  </motion.div>
+                </div>
               </div>
 
-              {/* Bottom bar */}
+              {/* RIGHT PANEL: Gallery + Info (40%) — desktop only */}
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-6 border-t border-white/[0.04] max-w-[1400px] mx-auto w-full"
+                initial={{ opacity: 0, x: 80 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 40 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                className="hidden lg:flex lg:w-[40%] relative flex-col"
               >
-                <p className="text-[10px] text-white/20">
-                  &copy; 2026 Dragon City Bahrain
-                </p>
-                <a
-                  href="#location"
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-dragon text-white text-xs font-semibold hover:bg-dragon-light transition-all hover:shadow-lg hover:shadow-dragon/25"
-                >
-                  <MapPin className="w-3.5 h-3.5" />
-                  Get Directions
-                </a>
+                {/* Vertical divider thread */}
+                <div className="absolute left-0 top-0 bottom-0 w-px bg-linear-to-b from-transparent via-dragon/20 to-transparent" />
+
+                {/* Gallery image — changes on hover */}
+                <div className="flex-1 relative overflow-hidden">
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={activeImage}
+                      src={navLinks[activeImage].img}
+                      alt={navLinks[activeImage].label}
+                      initial={{ opacity: 0, scale: 1.1 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 1.05 }}
+                      transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  </AnimatePresence>
+
+                  {/* Overlays */}
+                  <div className="absolute inset-0 bg-linear-to-l from-transparent via-transparent to-[#050505]/80" />
+                  <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/30 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-b from-[#050505]/60 via-transparent to-transparent" />
+
+                  {/* Chinese pattern overlay */}
+                  <div
+                    className="absolute inset-0 opacity-20 pointer-events-none bg-cover bg-center"
+                    style={{ backgroundImage: 'url(/images/chinese-pattern-bg.jpg)', mixBlendMode: 'screen' }}
+                  />
+
+                  {/* Image label */}
+                  <motion.div
+                    key={`label-${activeImage}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                    className="absolute top-28 right-8"
+                  >
+                    <span className="text-[10px] tracking-[0.3em] uppercase text-white/30 font-mono">
+                      {String(activeImage + 1).padStart(2, '0')} / {String(navLinks.length).padStart(2, '0')}
+                    </span>
+                  </motion.div>
+
+                  {/* Bottom info panel */}
+                  <div className="absolute bottom-0 left-0 right-0 p-8 space-y-6">
+                    {/* Location */}
+                    <div>
+                      <p className="text-[10px] tracking-[0.4em] uppercase text-dragon/40 mb-2">Location</p>
+                      <p className="text-sm text-white/50 leading-relaxed">
+                        Diyar Al Muharraq<br />
+                        Kingdom of Bahrain
+                      </p>
+                    </div>
+
+                    {/* Hours */}
+                    <div>
+                      <p className="text-[10px] tracking-[0.4em] uppercase text-dragon/40 mb-2">Hours</p>
+                      <p className="text-sm text-white/50">
+                        Sat – Wed: 10 AM – 10 PM<br />
+                        Thu – Fri: 10 AM – 12 AM
+                      </p>
+                    </div>
+
+                    {/* CTAs */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => { setMenuOpen(false); setMapOpen(true); }}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-dragon/90 hover:bg-dragon text-white text-xs font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-dragon/20 cursor-pointer"
+                      >
+                        <Map className="w-3.5 h-3.5" />
+                        Mall Map
+                      </button>
+                      <a
+                        href="#location"
+                        onClick={() => setMenuOpen(false)}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 hover:bg-white/10 text-white/70 hover:text-white text-xs font-semibold transition-all duration-300"
+                      >
+                        <MapPin className="w-3.5 h-3.5" />
+                        Directions
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             </div>
+
+            {/* Large decorative text */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, delay: 0.3 }}
+              className="absolute bottom-8 left-8 font-chinese text-[180px] xl:text-[240px] text-white/1.5 leading-none select-none pointer-events-none hidden lg:block"
+            >
+              龙城
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Search overlay */}
+      {/* ─── Mall Map Modal ─── */}
       <AnimatePresence>
-        {searchOpen && (
+        {mapOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl flex flex-col"
-            onClick={() => setSearchOpen(false)}
+            transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+            className="fixed inset-0 z-60 flex items-center justify-center"
           >
-            {/* Close button */}
-            <div className="flex justify-end p-4 sm:p-6">
-              <button
-                onClick={() => setSearchOpen(false)}
-                className="w-10 h-10 rounded-full flex items-center justify-center text-white/60 hover:text-white hover:bg-white/[0.06] transition-all cursor-pointer"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-[#050505]/95 backdrop-blur-2xl"
+              onClick={() => setMapOpen(false)}
+            />
 
-            {/* Search content */}
-            <div
-              className="flex-1 flex items-start justify-center pt-[10vh] sm:pt-[15vh] px-6"
-              onClick={(e) => e.stopPropagation()}
+            {/* Map container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+              className="relative w-[95vw] max-w-350 h-[85vh] rounded-2xl overflow-hidden bg-[#0a0a0a] border border-white/8"
             >
-              <motion.div
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 40, opacity: 0 }}
-                transition={{ delay: 0.1, type: 'spring', damping: 20 }}
-                className="w-full max-w-2xl"
-              >
-                <p className="text-xs sm:text-sm text-dragon/50 mb-4 tracking-[0.3em] uppercase">
-                  <span className="font-chinese mr-2">搜索</span>
-                  Search Dragon City
-                </p>
-
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search stores, categories..."
-                    autoFocus
-                    className="w-full bg-transparent border-b-2 border-white/15 focus:border-dragon text-white text-2xl sm:text-3xl md:text-5xl font-display font-light py-3 sm:py-4 outline-none placeholder-white/10 transition-colors"
-                  />
-                  <Search className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-6 sm:w-8 sm:h-8 text-white/15" />
-                </div>
-
-                <div className="flex flex-wrap items-center gap-3 sm:gap-6 mt-6">
-                  <p className="text-[10px] sm:text-xs text-white/20">Popular:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {['Electronics', 'Fashion', 'Food Court', 'Furniture'].map((t) => (
-                      <span
-                        key={t}
-                        className="px-3 py-1 rounded-full bg-white/[0.04] text-[10px] sm:text-xs text-white/30 border border-white/[0.06] hover:border-dragon/30 hover:text-white/50 cursor-pointer transition-all"
-                      >
-                        {t}
-                      </span>
-                    ))}
+              {/* Top bar */}
+              <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between px-6 py-4 bg-linear-to-b from-[#0a0a0a] via-[#0a0a0a]/90 to-transparent">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-dragon/15 flex items-center justify-center">
+                    <Map className="w-4.5 h-4.5 text-dragon" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-white">Mall Map</h3>
+                    <p className="text-[10px] text-white/30">Dragon City Bahrain — Interactive Directory</p>
                   </div>
                 </div>
 
-                <p className="text-[10px] text-white/15 mt-4">Press ESC to close</p>
-              </motion.div>
-            </div>
+                <div className="flex items-center gap-2">
+                  <a
+                    href="/images/mall-map.jpg"
+                    download
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/50 hover:text-white text-xs transition-all duration-300"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Download</span>
+                  </a>
+                  <button
+                    onClick={() => setMapOpen(false)}
+                    className="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/50 hover:text-white transition-all duration-300 cursor-pointer"
+                  >
+                    <X className="w-4.5 h-4.5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Map content — placeholder */}
+              <div className="h-full flex flex-col items-center justify-center p-8 pt-20">
+                <div className="relative mb-8">
+                  <div className="w-24 h-24 rounded-3xl bg-dragon/10 flex items-center justify-center">
+                    <Map className="w-10 h-10 text-dragon/60" />
+                  </div>
+                  <div className="absolute -inset-4 rounded-4xl border border-dragon/10 animate-pulse" />
+                </div>
+                <p className="text-lg font-display font-semibold text-white/80 mb-2">Mall Map Coming Soon</p>
+                <p className="text-sm text-white/30 text-center max-w-sm">
+                  An interactive directory of Dragon City's 799+ stores will be available here.
+                  Explore our categories in the meantime.
+                </p>
+                <a
+                  href="#shops"
+                  onClick={() => setMapOpen(false)}
+                  className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-dragon/90 hover:bg-dragon text-white text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-dragon/20"
+                >
+                  Browse Categories
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

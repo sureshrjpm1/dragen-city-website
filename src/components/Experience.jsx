@@ -8,7 +8,7 @@ const experiences = [
     title: 'Dine',
     zh: '餐饮',
     desc: 'Enjoy a world of flavors with Chinese, Asian, and international cuisines at our vibrant food court and specialty restaurants.',
-    image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1600&q=90&fit=crop',
     color: 'from-orange-500 to-red-600',
   },
   {
@@ -16,7 +16,7 @@ const experiences = [
     title: 'Shop',
     zh: '购物',
     desc: 'Browse 799+ retail and wholesale stores offering electronics, fashion, furniture, and authentic Chinese products at competitive prices.',
-    image: 'https://images.unsplash.com/photo-1481437156560-3205f6a55735?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1481437156560-3205f6a55735?w=1600&q=90&fit=crop',
     color: 'from-dragon to-dragon-dark',
   },
   {
@@ -24,7 +24,7 @@ const experiences = [
     title: 'Explore',
     zh: '探索',
     desc: 'Immerse yourself in Chinese inspired architecture, cultural celebrations, and seasonal festivals throughout the year.',
-    image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1600&q=90&fit=crop',
     color: 'from-gold to-gold-dark',
   },
 ];
@@ -45,7 +45,7 @@ export default function Experience() {
   return (
     <section className="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden" ref={ref}>
       <div className="absolute inset-0 chinese-pattern" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
 
       {/* Large Chinese watermark */}
       <div className="absolute -top-10 -right-20 font-chinese text-[350px] text-white/[0.012] leading-none select-none pointer-events-none hidden lg:block">
@@ -62,7 +62,7 @@ export default function Experience() {
               transition={{ duration: 0.6 }}
               className="flex items-center gap-3 mb-6"
             >
-              <div className="w-12 h-px bg-gradient-to-r from-dragon to-gold" />
+              <div className="w-12 h-px bg-linear-to-r from-dragon to-gold" />
               <span className="text-xs tracking-[0.3em] uppercase text-dragon font-medium">Experience</span>
               <span className="font-chinese text-dragon/30 text-xs">体验龙城</span>
             </motion.div>
@@ -108,7 +108,7 @@ export default function Experience() {
                   alt={exp.title}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1200ms]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10 group-hover:from-black/95 transition-all duration-500" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-black/10 group-hover:from-black/95 transition-all duration-500" />
 
                 {/* Chinese character bg */}
                 <span className="absolute top-8 right-8 font-chinese text-7xl text-white/[0.05] group-hover:text-white/[0.1] transition-colors duration-700">
@@ -117,7 +117,7 @@ export default function Experience() {
 
                 {/* Content */}
                 <div className="relative h-full flex flex-col justify-end p-8 md:p-10">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${exp.color} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`w-14 h-14 rounded-2xl bg-linear-to-br ${exp.color} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className="w-7 h-7 text-white" />
                   </div>
 

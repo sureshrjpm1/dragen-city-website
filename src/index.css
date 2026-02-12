@@ -1,9 +1,34 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Sukajan Brush';
+  src: url('./assets/fonts/Sukajan Brush Demo.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GongXiFaCai';
+  src: url('./assets/fonts/GongXiFaCaiPersonalUseOnl-WpJM4.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Shojumaru';
+  src: url('./assets/fonts/Shojumaru-6ZlM.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-display: 'Playfair Display', Georgia, serif;
   --font-chinese: 'Noto Serif SC', 'Ma Shan Zheng', serif;
+  --font-brush: 'Shojumaru', 'GongXiFaCai', 'Sukajan Brush', cursive;
 
   --color-dragon: #C41E2A;
   --color-dragon-dark: #9B1620;
@@ -149,6 +174,18 @@
   }
 }
 
+/* Red thread pulse — travels left to right along the navbar thread */
+@keyframes thread-pulse {
+  0% { left: -10%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+.animate-thread-pulse {
+  animation: thread-pulse 3s ease-in-out infinite;
+}
+
 /* Subtle grain overlay */
 @keyframes grain {
   0%, 100% { transform: translate(0, 0); }
@@ -159,9 +196,15 @@
   90% { transform: translate(-1%, 7%); }
 }
 
-/* Chinese pattern background */
+/* Chinese pattern background — subtle cross pattern */
 .chinese-pattern {
   background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C41E2A' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Chinese lattice / window pattern — for footer */
+.chinese-lattice {
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C41E2A' stroke-opacity='0.06' stroke-width='1'%3E%3Crect x='10' y='10' width='20' height='20' rx='1'/%3E%3Crect x='50' y='10' width='20' height='20' rx='1'/%3E%3Crect x='10' y='50' width='20' height='20' rx='1'/%3E%3Crect x='50' y='50' width='20' height='20' rx='1'/%3E%3Cline x1='30' y1='20' x2='50' y2='20'/%3E%3Cline x1='30' y1='60' x2='50' y2='60'/%3E%3Cline x1='20' y1='30' x2='20' y2='50'/%3E%3Cline x1='60' y1='30' x2='60' y2='50'/%3E%3Ccircle cx='40' cy='40' r='3'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* Lantern glow effect */

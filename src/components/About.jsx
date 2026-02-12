@@ -123,7 +123,7 @@ export default function About() {
           >
             <div className="relative rounded-3xl overflow-hidden aspect-[16/10]">
               <img
-                src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=1200&q=80"
+                src="/images/dragon-city-aerial.jpg"
                 alt="Dragon City Bahrain"
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />

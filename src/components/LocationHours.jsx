@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { MapPin, Navigation, Clock, ExternalLink } from 'lucide-react';
+import { MapPin, Navigation, Clock, ExternalLink, Map } from 'lucide-react';
 
 export default function LocationHours() {
   const ref = useRef(null);
@@ -17,10 +17,10 @@ export default function LocationHours() {
             transition={{ duration: 0.6 }}
             className="flex items-center justify-center gap-3 mb-6"
           >
-            <div className="w-12 h-px bg-gradient-to-r from-transparent to-dragon" />
+            <div className="w-12 h-px bg-linear-to-r from-transparent to-dragon" />
             <span className="text-xs tracking-[0.3em] uppercase text-dragon font-medium">Plan Your Visit</span>
             <span className="font-chinese text-dragon/30 text-xs">计划您的访问</span>
-            <div className="w-12 h-px bg-gradient-to-l from-transparent to-dragon" />
+            <div className="w-12 h-px bg-linear-to-l from-transparent to-dragon" />
           </motion.div>
 
           <motion.h2
@@ -42,11 +42,11 @@ export default function LocationHours() {
             className="lg:col-span-3 relative group rounded-3xl overflow-hidden min-h-[450px]"
           >
             <img
-              src="https://images.unsplash.com/photo-1519567241046-7f570f8e9d1c?w=1200&q=80"
+              src="/images/hero-banner.jpg"
               alt="Dragon City entrance"
               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-black/10" />
 
             <div className="relative h-full flex flex-col justify-end p-8 md:p-10">
               <div className="flex items-center gap-2 mb-4">
@@ -63,16 +63,25 @@ export default function LocationHours() {
                 Diyar Al Muharraq, Bahrain
               </p>
 
-              <a
-                href="https://maps.google.com/?q=Dragon+City+Bahrain"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group/btn inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-white text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 w-fit"
-              >
-                <Navigation className="w-4 h-4" />
-                Directions
-                <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
-              </a>
+              <div className="flex items-center gap-3 flex-wrap">
+                <a
+                  href="https://maps.google.com/?q=Dragon+City+Bahrain"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/btn inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 text-white text-sm font-medium hover:bg-white hover:text-black transition-all duration-300"
+                >
+                  <Navigation className="w-4 h-4" />
+                  Directions
+                  <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
+                </a>
+                <button
+                  onClick={() => document.dispatchEvent(new CustomEvent('open-mall-map'))}
+                  className="group/btn inline-flex items-center gap-2 px-6 py-3 rounded-full bg-dragon text-white text-sm font-semibold hover:bg-dragon-light hover:shadow-lg hover:shadow-dragon/20 transition-all duration-300 cursor-pointer"
+                >
+                  <Map className="w-4 h-4" />
+                  Mall Map
+                </button>
+              </div>
             </div>
           </motion.div>
 

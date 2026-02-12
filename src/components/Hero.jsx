@@ -1,41 +1,41 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown, Play, Pause } from 'lucide-react';
-import bgVideo from '../assets/bg_video.mp4';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { ArrowDown, Play, Pause } from "lucide-react";
+import bgVideo from "../assets/bg_video.mp4";
 
 const slides = [
   {
     video: bgVideo,
-    image: 'https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?w=1920&q=80',
-    title: 'Dragon City',
-    subtitle: 'Bahrain',
-    desc: 'The largest wholesale and retail trading centre in the Kingdom of Bahrain, located in Diyar Al Muharraq.',
-    zh: '龙城巴林',
+    image: "https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?w=1920&q=80",
+    title: "Dragon City",
+    subtitle: "Bahrain",
+    desc: "The largest wholesale and retail trading centre in the Kingdom of Bahrain, located in Diyar Al Muharraq.",
+    zh: "龙城巴林",
     tag: "Bahrain's Premier Destination",
   },
   {
-    image: 'https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?w=1920&q=80',
-    title: '799+ Stores',
-    subtitle: 'To Explore',
-    desc: 'Discover an unparalleled selection of electronics, fashion, furniture, and authentic Chinese products.',
-    zh: '购物天堂',
-    tag: 'Wholesale & Retail',
+    image: "https://images.unsplash.com/photo-1547981609-4b6bfe67ca0b?w=1920&q=80",
+    title: "799+ Stores",
+    subtitle: "To Explore",
+    desc: "Discover an unparalleled selection of electronics, fashion, furniture, and authentic Chinese products.",
+    zh: "购物天堂",
+    tag: "Wholesale & Retail",
   },
   {
-    image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1920&q=80',
-    title: 'Cultural',
-    subtitle: 'Heritage',
-    desc: 'Experience the beauty of Chinese-inspired architecture and cultural celebrations throughout the year.',
-    zh: '中华传承',
-    tag: 'Art & Architecture',
+    image: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1920&q=80",
+    title: "Cultural",
+    subtitle: "Heritage",
+    desc: "Experience the beauty of Chinese-inspired architecture and cultural celebrations throughout the year.",
+    zh: "中华传承",
+    tag: "Art & Architecture",
   },
   {
-    image: 'https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=1920&q=80',
-    title: 'Year-Round',
-    subtitle: 'Events',
-    desc: 'Join us for exciting cultural events, seasonal promotions, and festive celebrations at Dragon City.',
-    zh: '精彩活动',
-    tag: 'Events & Festivals',
+    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=1920&q=80",
+    title: "Year-Round",
+    subtitle: "Events",
+    desc: "Join us for exciting cultural events, seasonal promotions, and festive celebrations at Dragon City.",
+    zh: "精彩活动",
+    tag: "Events & Festivals",
   },
 ];
 
@@ -54,7 +54,7 @@ export default function Hero() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end start'],
+    offset: ["start start", "end start"],
   });
 
   const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
@@ -70,10 +70,13 @@ export default function Hero() {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   }, []);
 
-  const goToSlide = useCallback((index) => {
-    setDirection(index > current ? 1 : -1);
-    setCurrent(index);
-  }, [current]);
+  const goToSlide = useCallback(
+    (index) => {
+      setDirection(index > current ? 1 : -1);
+      setCurrent(index);
+    },
+    [current],
+  );
 
   // Swipe / drag handlers
   const handlePointerDown = useCallback((e) => {
@@ -81,19 +84,22 @@ export default function Hero() {
     isDragging.current = true;
   }, []);
 
-  const handlePointerUp = useCallback((e) => {
-    if (!isDragging.current || dragStartX.current === null) return;
-    isDragging.current = false;
-    const deltaX = e.clientX - dragStartX.current;
-    if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
-      if (deltaX < 0) {
-        nextSlide();
-      } else {
-        prevSlide();
+  const handlePointerUp = useCallback(
+    (e) => {
+      if (!isDragging.current || dragStartX.current === null) return;
+      isDragging.current = false;
+      const deltaX = e.clientX - dragStartX.current;
+      if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+        if (deltaX < 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
       }
-    }
-    dragStartX.current = null;
-  }, [nextSlide, prevSlide]);
+      dragStartX.current = null;
+    },
+    [nextSlide, prevSlide],
+  );
 
   const handlePointerCancel = useCallback(() => {
     isDragging.current = false;
@@ -106,6 +112,7 @@ export default function Hero() {
       setVideoPlaying(true);
       setIsPaused(false);
       if (videoRef.current) {
+        videoRef.current.currentTime = 36.8;
         videoRef.current.play().catch(() => {});
       }
     }
@@ -163,22 +170,27 @@ export default function Hero() {
               muted
               loop
               playsInline
-              className="w-full h-[120%] object-cover"
+              onLoadedMetadata={(e) => {
+                e.target.currentTime = 37.5;
+              }}
+              className="w-full h-full object-cover"
             />
           ) : (
-            <motion.img
-              style={{ y }}
-              src={slide.image}
-              alt={slide.title}
-              className="w-full h-[120%] object-cover"
-            />
+            <motion.img style={{ y }} src={slide.image} alt={slide.title} className="w-full h-[120%] object-cover" />
           )}
         </motion.div>
       </AnimatePresence>
 
       {/* Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/30" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/15" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
+      {/* Top vignette — blends navbar area into the image */}
+      <div
+        className="absolute inset-x-0 top-0 h-105 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 18%, rgba(0,0,0,0.18) 38%, rgba(0,0,0,0.08) 58%, rgba(0,0,0,0.02) 78%, transparent 100%)',
+        }}
+      />
 
       {/* Chinese ornament */}
       <motion.div
@@ -192,41 +204,44 @@ export default function Hero() {
           alt=""
           className="w-full h-full object-contain"
           animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.05, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
       </motion.div>
 
-      {/* Vertical Chinese text */}
+      {/* Vertical branding — Chinese + 龍 diamond */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.25 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1 }}
-        className="absolute right-6 md:right-16 top-1/2 -translate-y-1/2 font-chinese text-5xl md:text-7xl text-white/25 hidden md:block"
-        style={{ writingMode: 'vertical-rl' }}
+        className="absolute right-6 md:right-16 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-5 pointer-events-none"
       >
-        龙城巴林
+        {/* Vertical Chinese text */}
+        <div
+          className="font-chinese text-4xl lg:text-5xl text-white/20 leading-tight"
+          style={{ writingMode: "vertical-rl" }}
+        >
+          龙城巴林
+        </div>
+
+        {/* Red diamond with 龍 character */}
+        <div className="relative w-12 h-12 lg:w-14 lg:h-14">
+          <div className="absolute inset-0 bg-linear-to-br from-dragon to-dragon-dark rotate-45 rounded-sm shadow-lg shadow-dragon/20" />
+          <span className="absolute inset-0 flex items-center justify-center font-chinese text-gold text-xl lg:text-2xl font-bold">
+            龍
+          </span>
+        </div>
       </motion.div>
 
       {/* Slide counter - top right */}
-      <motion.div
-        style={{ opacity }}
-        className="absolute top-32 right-6 md:right-16 z-10 hidden md:flex flex-col items-end gap-1"
-      >
-        <span className="text-6xl font-display font-bold text-white/10">
-          {String(current + 1).padStart(2, '0')}
-        </span>
-        <span className="text-xs text-white/30 tracking-widest">
-          / {String(slides.length).padStart(2, '0')}
-        </span>
+      <motion.div style={{ opacity }} className="absolute top-32 right-6 md:right-16 z-10 hidden md:flex flex-col items-end gap-1">
+        <span className="text-6xl font-display font-bold text-white/10">{String(current + 1).padStart(2, "0")}</span>
+        <span className="text-xs text-white/30 tracking-widest">/ {String(slides.length).padStart(2, "0")}</span>
       </motion.div>
 
       {/* Main content - bottom area */}
-      <motion.div
-        style={{ opacity }}
-        className="absolute bottom-0 left-0 right-0 z-10"
-      >
+      <motion.div style={{ opacity }} className="absolute bottom-0 left-0 right-0 z-10">
         <div className="px-6 md:px-12 lg:px-20 pb-12 md:pb-16">
-          <div className="max-w-[1400px] mx-auto">
+          <div className="max-w-350 mx-auto">
             {/* Tag */}
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
@@ -237,11 +252,14 @@ export default function Hero() {
                 transition={{ duration: 0.5 }}
                 className="flex items-center gap-4 mb-4 md:mb-6"
               >
-                <div className="w-8 md:w-12 h-px bg-gradient-to-r from-dragon to-gold" />
-                <span className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-dragon font-medium">
+                <div className="w-8 md:w-12 h-px bg-linear-to-r from-dragon to-gold" />
+                <span
+                  className="text-xs md:text-sm tracking-[0.3em] uppercase text-dragon font-semibold"
+                  style={{ textShadow: '0 0 12px rgba(196,30,42,0.5), 0 1px 4px rgba(0,0,0,0.6)' }}
+                >
                   {slide.tag}
                 </span>
-                <span className="font-chinese text-dragon/40 text-xs md:text-sm hidden sm:inline">{slide.zh}</span>
+                <span className="font-chinese text-dragon/50 text-sm md:text-base hidden sm:inline" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}>{slide.zh}</span>
               </motion.div>
             </AnimatePresence>
 
@@ -255,14 +273,20 @@ export default function Hero() {
                 transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
                 className="mb-4 md:mb-6"
               >
-                <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[120px] font-display font-bold leading-[0.9] tracking-tight text-white">
-                  {slide.title}
-                </h1>
+                <h1 className={`font-brush font-bold leading-[0.9] tracking-tight text-white ${
+                  isVideoSlide
+                    ? 'text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[120px]'
+                    : 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[90px]'
+                }`}>{slide.title}</h1>
                 <h1
-                  className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[120px] font-display font-bold leading-[0.9] tracking-tight"
+                  className={`font-brush font-bold leading-[0.9] tracking-tight ${
+                    isVideoSlide
+                      ? 'text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[120px]'
+                      : 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[90px]'
+                  }`}
                   style={{
-                    color: 'transparent',
-                    WebkitTextStroke: '1.5px rgba(255,255,255,0.25)',
+                    color: "transparent",
+                    WebkitTextStroke: "1.5px rgba(255,255,255,0.25)",
                   }}
                 >
                   {slide.subtitle}
@@ -301,11 +325,9 @@ export default function Hero() {
                   <button
                     onClick={toggleVideo}
                     className={`group w-10 h-10 sm:w-12 sm:h-12 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
-                      videoPlaying
-                        ? 'border-dragon/50 bg-dragon/10 hover:bg-dragon/20'
-                        : 'border-white/30 bg-white/5 hover:border-dragon/50 hover:bg-dragon/10'
+                      videoPlaying ? "border-dragon/50 bg-dragon/10 hover:bg-dragon/20" : "border-white/30 bg-white/5 hover:border-dragon/50 hover:bg-dragon/10"
                     }`}
-                    title={videoPlaying ? 'Pause video' : 'Play video'}
+                    title={videoPlaying ? "Pause video" : "Play video"}
                   >
                     {videoPlaying ? (
                       <Pause className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-dragon transition-colors" />
@@ -318,25 +340,15 @@ export default function Hero() {
                 {/* Slide dots */}
                 <div className="flex items-center gap-2 ml-1 sm:ml-4">
                   {slides.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => goToSlide(i)}
-                      className="relative cursor-pointer group/dot"
-                    >
-                      <div
-                        className={`h-1 rounded-full transition-all duration-500 ${
-                          i === current
-                            ? 'w-8 sm:w-12 bg-white/30'
-                            : 'w-4 sm:w-6 bg-white/10 hover:bg-white/20'
-                        }`}
-                      />
+                    <button key={i} onClick={() => goToSlide(i)} className="relative cursor-pointer group/dot">
+                      <div className={`h-1 rounded-full transition-all duration-500 ${i === current ? "w-8 sm:w-12 bg-white/30" : "w-4 sm:w-6 bg-white/10 hover:bg-white/20"}`} />
                       {i === current && (
                         <div
                           key={`progress-${current}`}
                           className="absolute top-0 left-0 h-1 rounded-full bg-dragon origin-left"
                           style={{
-                            animation: isPaused ? 'none' : `slide-progress ${slides[current].video ? 180000 : SLIDE_DURATION}ms linear`,
-                            animationFillMode: 'forwards',
+                            animation: isPaused ? "none" : `slide-progress ${slides[current].video ? 180000 : SLIDE_DURATION}ms linear`,
+                            animationFillMode: "forwards",
                           }}
                         />
                       )}
@@ -350,15 +362,10 @@ export default function Hero() {
       </motion.div>
 
       {/* Scroll indicator - hidden on mobile */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2"
-      >
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2">
         <motion.div
           animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           className="w-5 h-8 rounded-full border border-white/15 flex items-start justify-center pt-1.5"
         >
           <div className="w-1 h-1.5 rounded-full bg-dragon/60" />
