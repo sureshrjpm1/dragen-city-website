@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Play, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 const stats = [
@@ -48,16 +48,17 @@ function AnimatedCounter({ value, suffix = '', isInView }) {
 export default function About() {
   const { isDark } = useTheme();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: false, margin: '-100px' });
   const statsRef = useRef(null);
-  const statsInView = useInView(statsRef, { once: true, margin: '-50px' });
+  const statsInView = useInView(statsRef, { once: false, margin: '-50px' });
+  const [videoOpen, setVideoOpen] = useState(false);
 
   return (
     <section id="about" className="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden">
       <div className="absolute inset-0 chinese-pattern" />
 
       {/* Decorative Chinese character */}
-      <div className={`absolute top-20 right-10 font-chinese text-[280px] ${isDark ? 'text-white/[0.015]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
+      <div className={`absolute top-20 right-10 font-chinese text-[280px] ${isDark ? 'text-white/[0.04]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
         龙
       </div>
 
@@ -79,7 +80,7 @@ export default function About() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className={`text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'} leading-[1] mb-16 max-w-4xl`}
+          className={`text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'} leading-[1.1] mb-16 max-w-4xl`}
         >
           The Largest Trading Centre{' '}
           <span className="text-gradient-dragon">in the Kingdom</span>
@@ -123,13 +124,35 @@ export default function About() {
             transition={{ duration: 1, delay: 0.3 }}
             className="lg:col-span-7 relative"
           >
-            <div className="relative rounded-3xl overflow-hidden aspect-[16/10]">
+            <div className="relative rounded-3xl overflow-hidden aspect-[16/10] group/video cursor-pointer" onClick={() => setVideoOpen(true)}>
               <img
                 src="/images/dragon-city-aerial.jpg"
                 alt="Dragon City Bahrain"
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover group-hover/video:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+
+              {/* Play button — Chinese-styled */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative">
+                  {/* Outer rotating diamond border */}
+                  <motion.div
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                    className="absolute -inset-5 border border-dragon/30 rounded-sm rotate-45"
+                  />
+                  {/* Glow pulse */}
+                  <motion.div
+                    animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0, 0.3] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                    className="absolute -inset-3 bg-dragon/20 rounded-full"
+                  />
+                  {/* Main button */}
+                  <div className="relative w-18 h-18 md:w-22 md:h-22 rounded-full bg-dragon/90 backdrop-blur-sm border-2 border-white/20 flex items-center justify-center shadow-2xl shadow-dragon/40 group-hover/video:bg-dragon group-hover/video:scale-110 transition-all duration-300">
+                    <Play className="w-7 h-7 md:w-8 md:h-8 text-white ml-1" fill="white" />
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Floating accent card */}
@@ -178,7 +201,7 @@ export default function About() {
               </span>
 
               {/* Counter */}
-              <p className={`text-4xl md:text-5xl lg:text-6xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'} mb-2 group-hover:text-dragon transition-colors duration-500`}>
+              <p className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'} mb-2 group-hover:text-dragon transition-colors duration-500`}>
                 <AnimatedCounter
                   value={stat.value}
                   suffix={stat.suffix}
@@ -195,6 +218,55 @@ export default function About() {
           ))}
         </motion.div>
       </div>
+
+      {/* Video Popup Modal */}
+      <AnimatePresence>
+        {videoOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+            onClick={() => setVideoOpen(false)}
+          >
+            {/* Backdrop */}
+            <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" />
+
+            {/* Modal content */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden shadow-2xl shadow-dragon/20 border border-white/10"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <iframe
+                src="https://www.youtube.com/embed/4deGNOJtFqE?autoplay=1&rel=0"
+                title="Dragon City Bahrain"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            </motion.div>
+
+            {/* Close button */}
+            <button
+              onClick={() => setVideoOpen(false)}
+              className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-dragon/80 hover:border-dragon transition-all duration-300 cursor-pointer z-10"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Chinese decorative corner accents */}
+            <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-dragon/40 rounded-tl-sm pointer-events-none" />
+            <div className="absolute top-4 right-20 w-8 h-8 border-t-2 border-r-2 border-dragon/40 rounded-tr-sm pointer-events-none" />
+            <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-dragon/40 rounded-bl-sm pointer-events-none" />
+            <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-dragon/40 rounded-br-sm pointer-events-none" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

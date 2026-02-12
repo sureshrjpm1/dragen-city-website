@@ -5,40 +5,40 @@ import { useTheme } from '../context/ThemeContext';
 
 const galleryImages = [
   {
-    src: 'https://images.unsplash.com/photo-1533669955142-6a73332af4db?w=1600&q=90&fit=crop',
-    title: 'Dragon Gate',
-    subtitle: 'Chinese Architecture',
+    src: '/images/gallery/Center Court Upscaled.jpg',
+    title: 'Center Court',
+    subtitle: 'Heart of Dragon City',
   },
   {
-    src: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=1600&q=90&fit=crop',
-    title: 'Festive Season',
+    src: '/images/gallery/DC-NOV2025-8.jpg',
+    title: 'Interior',
+    subtitle: 'Dragon City Complex',
+  },
+  {
+    src: '/images/gallery/FB8A8436.JPG',
+    title: 'Festive Decor',
     subtitle: 'Cultural Celebrations',
   },
   {
-    src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&q=90&fit=crop',
-    title: 'Heritage Temple',
-    subtitle: 'Traditional Beauty',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1600&q=90&fit=crop',
-    title: 'Mall Experience',
+    src: '/images/gallery/DC-NOV2025-4.jpg',
+    title: 'Shopping Avenue',
     subtitle: 'Shopping & Lifestyle',
   },
   {
-    src: 'https://images.unsplash.com/photo-1513623935135-c896b59073c1?w=1600&q=90&fit=crop',
-    title: 'Dragon City',
+    src: '/images/gallery/DC-NOV2025-1.jpg',
+    title: 'Grand Entrance',
     subtitle: 'Iconic Landmark',
   },
   {
-    src: 'https://images.unsplash.com/photo-1528164344705-47542687000d?w=1600&q=90&fit=crop',
-    title: 'Lantern Festival',
-    subtitle: 'Annual Celebrations',
+    src: '/images/gallery/DC-NOV2025-9.jpg',
+    title: 'Food Court',
+    subtitle: 'Dining & Cuisine',
   },
 ];
 
 export default function Gallery() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: false, margin: '-100px' });
   const { isDark } = useTheme();
 
   return (
@@ -47,7 +47,7 @@ export default function Gallery() {
       <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-dragon/20 to-transparent" />
 
       {/* Chinese watermark */}
-      <div className={`absolute top-20 left-10 font-chinese text-[200px] ${isDark ? 'text-white/[0.015]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
+      <div className={`absolute top-20 left-10 font-chinese text-[200px] ${isDark ? 'text-white/[0.04]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
         画廊
       </div>
 
@@ -71,7 +71,7 @@ export default function Gallery() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className={`text-4xl md:text-5xl lg:text-7xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
+                className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
               >
                 Explore the{' '}
                 <span className={isDark ? 'text-white/25' : 'text-black/25'}>Experience</span>
@@ -111,13 +111,13 @@ export default function Gallery() {
             <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-[220px] md:grid-rows-[260px] lg:grid-rows-[300px] gap-3 md:gap-4 mt-3 md:mt-4">
               <GalleryCard img={galleryImages[5]} i={5} isInView={isInView} className="col-span-1" />
               <GalleryCard
-                img={{ src: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1600&q=90&fit=crop', title: 'Grand Interior', subtitle: 'Architecture & Design' }}
+                img={{ src: '/images/dragon-city-aerial.jpg', title: 'Aerial View', subtitle: 'Dragon City Complex' }}
                 i={6}
                 isInView={isInView}
                 className="col-span-2 md:col-span-1"
               />
               <GalleryCard
-                img={{ src: 'https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=1600&q=90&fit=crop', title: 'Night Market', subtitle: 'Evening Vibes' }}
+                img={{ src: '/images/visit-us.jpg', title: 'Grand Entrance', subtitle: 'Welcome to Dragon City' }}
                 i={7}
                 isInView={isInView}
                 className="col-span-2 md:col-span-1"
@@ -145,7 +145,7 @@ function GalleryCard({ img, i, isInView, className }) {
       />
 
       {/* Always-visible subtle gradient */}
-      <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
 
       {/* Hover overlay */}
       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -154,7 +154,7 @@ function GalleryCard({ img, i, isInView, className }) {
       <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
         <div className="flex items-end justify-between gap-3">
           <div className="translate-y-1 group-hover:translate-y-0 transition-transform duration-500">
-            <p className="text-sm md:text-base font-display font-bold text-white leading-tight">{img.title}</p>
+            <p className="text-base md:text-lg font-display font-bold text-white leading-tight">{img.title}</p>
             <p className="text-xs text-white/50 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{img.subtitle}</p>
           </div>
 

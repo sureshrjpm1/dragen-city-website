@@ -5,19 +5,19 @@ import { useTheme } from '../context/ThemeContext';
 
 const events = [
   {
-    image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80',
+    image: '/images/gallery/FB8A8436.JPG',
     title: 'Bahrain National Day Celebrations',
     date: 'December 2025',
     category: 'Cultural',
   },
   {
-    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80',
+    image: '/images/gallery/DC-NOV2025-4.jpg',
     title: 'Dragon City: Your No.1 Shopping Destination This Summer!',
     date: 'Summer 2025',
     category: 'Promotion',
   },
   {
-    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=800&q=80',
+    image: '/images/gallery/DC-NOV2025-1.jpg',
     title: "Dragon City 'Scratch & Win' Grand Campaign",
     date: 'July - August 2025',
     category: 'Campaign',
@@ -26,17 +26,17 @@ const events = [
 
 const news = [
   {
-    image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=400&q=80',
+    image: '/images/gallery/DC-NOV2025-9.jpg',
     title: 'Dragon City Bahrain Announces the Winner of its November Promotional Campaign',
     date: 'Nov 2024',
   },
   {
-    image: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=400&q=80',
+    image: '/images/gallery/DC-NOV2025-8.jpg',
     title: 'Dragon City Bahrain Launches Big Prizes Campaign to Reward its Visitors',
     date: 'Oct 2024',
   },
   {
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&q=80',
+    image: '/images/gallery/Center Court Upscaled.jpg',
     title: 'Dragon City Bahrain Launches "Scratch & Win" Campaign for Shoppers',
     date: 'Jul 2024',
   },
@@ -44,7 +44,7 @@ const news = [
 
 export default function Events() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: false, margin: '-100px' });
   const { isDark } = useTheme();
 
   return (
@@ -53,7 +53,7 @@ export default function Events() {
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-dragon/20 to-transparent" />
 
       {/* Chinese watermark */}
-      <div className={`absolute bottom-20 right-10 font-chinese text-[180px] ${isDark ? 'text-white/[0.015]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
+      <div className={`absolute bottom-20 right-10 font-chinese text-[180px] ${isDark ? 'text-white/[0.04]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
         活动
       </div>
 
@@ -77,7 +77,7 @@ export default function Events() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className={`text-4xl md:text-5xl lg:text-7xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
+                className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
               >
                 What's <span className="text-gradient-dragon">Happening</span>
               </motion.h2>

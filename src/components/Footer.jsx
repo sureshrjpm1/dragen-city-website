@@ -59,7 +59,7 @@ const socials = [
 
 export default function Footer() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const isInView = useInView(ref, { once: false, margin: '-50px' });
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
   const { isDark } = useTheme();
@@ -171,9 +171,9 @@ export default function Footer() {
                 {/* Logo + Info */}
                 <div className="col-span-2 md:col-span-4">
                   <img
-                    src="/images/header-logo.png"
+                    src="/images/logo_v2_dark.png"
                     alt="Dragon City Bahrain"
-                    className="h-10 md:h-11 w-auto object-contain mb-6"
+                    className="h-[118px] md:h-[134px] w-auto object-contain mb-2"
                   />
                   <div className="space-y-3 mb-6">
                     <div className="flex items-start gap-2.5">

@@ -9,7 +9,7 @@ const experiences = [
     title: 'Dine',
     zh: '餐饮',
     desc: 'Enjoy a world of flavors with Chinese, Asian, and international cuisines at our vibrant food court and specialty restaurants.',
-    image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1600&q=90&fit=crop',
+    image: '/images/experience-dine.jpg',
     color: 'from-orange-500 to-red-600',
   },
   {
@@ -17,7 +17,7 @@ const experiences = [
     title: 'Shop',
     zh: '购物',
     desc: 'Browse 799+ retail and wholesale stores offering electronics, fashion, furniture, and authentic Chinese products at competitive prices.',
-    image: 'https://images.unsplash.com/photo-1481437156560-3205f6a55735?w=1600&q=90&fit=crop',
+    image: '/images/sidebar/sidebar_shop.jpg',
     color: 'from-dragon to-dragon-dark',
   },
   {
@@ -42,7 +42,7 @@ const amenities = [
 export default function Experience() {
   const { isDark } = useTheme();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: false, margin: '-100px' });
 
   return (
     <section className="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden" ref={ref}>
@@ -50,7 +50,7 @@ export default function Experience() {
       <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent ${isDark ? 'via-white/10' : 'via-black/10'} to-transparent`} />
 
       {/* Large Chinese watermark */}
-      <div className={`absolute -top-10 -right-20 font-chinese text-[350px] ${isDark ? 'text-white/[0.012]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
+      <div className={`absolute -top-10 -right-20 font-chinese text-[350px] ${isDark ? 'text-white/[0.04]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
         体验
       </div>
 
@@ -73,7 +73,7 @@ export default function Experience() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className={`text-4xl md:text-5xl lg:text-7xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
+              className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
             >
               Shop. Dine.{' '}
               <span className={isDark ? 'text-white/25' : 'text-black/25'}>Explore.</span>
@@ -101,8 +101,7 @@ export default function Experience() {
                 initial={{ opacity: 0, y: 50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.2 + i * 0.15 }}
-                whileHover={{ y: -10, transition: { duration: 0.4 } }}
-                className="group relative rounded-3xl overflow-hidden min-h-[500px] md:min-h-[550px] cursor-pointer"
+                className="group relative rounded-3xl overflow-hidden min-h-[500px] md:min-h-[550px] cursor-pointer hover:-translate-y-2 transition-transform duration-500 ease-out border-0 outline-none"
               >
                 {/* Background image */}
                 <img
@@ -110,7 +109,7 @@ export default function Experience() {
                   alt={exp.title}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[1200ms]"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-black/10 group-hover:from-black/95 transition-all duration-500" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/95 via-black/50 to-black/15 group-hover:from-black/95 transition-all duration-500" />
 
                 {/* Chinese character bg */}
                 <span className="absolute top-8 right-8 font-chinese text-7xl text-white/[0.05] group-hover:text-white/[0.1] transition-colors duration-700">
@@ -118,7 +117,7 @@ export default function Experience() {
                 </span>
 
                 {/* Content */}
-                <div className="relative h-full flex flex-col justify-end p-8 md:p-10">
+                <div className="relative h-full flex flex-col justify-end p-6 md:p-8">
                   <div className={`w-14 h-14 rounded-2xl bg-linear-to-br ${exp.color} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className="w-7 h-7 text-white" />
                   </div>

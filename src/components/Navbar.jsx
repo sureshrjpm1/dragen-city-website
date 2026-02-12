@@ -4,12 +4,12 @@ import { MapPin, ArrowUpRight, Map, X, ZoomIn, ZoomOut, Download, Sun, Moon } fr
 import { useTheme } from '../context/ThemeContext';
 
 const navLinks = [
-  { label: 'Home', href: '#home', zh: '首页', img: 'https://images.unsplash.com/photo-1533669955142-6a73332af4db?w=1600&q=90&fit=crop' },
-  { label: 'About', href: '#about', zh: '关于', img: 'https://images.unsplash.com/photo-1513623935135-c896b59073c1?w=1600&q=90&fit=crop' },
-  { label: 'Shops', href: '#shops', zh: '商店', img: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1600&q=90&fit=crop' },
-  { label: 'Media', href: '#media', zh: '媒体', img: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=1600&q=90&fit=crop' },
-  { label: 'Location', href: '#location', zh: '位置', img: 'https://images.unsplash.com/photo-1519451241324-20b4ea2c4220?w=1600&q=90&fit=crop' },
-  { label: 'Contact', href: '#contact', zh: '联系', img: 'https://images.unsplash.com/photo-1599707367812-042e4c84a396?w=1600&q=90&fit=crop' },
+  { label: 'Home', href: '#home', zh: '首页', img: '/images/sidebar/sidebar_home.jpg' },
+  { label: 'About', href: '#about', zh: '关于', img: '/images/gallery/DC-NOV2025-4.jpg' },
+  { label: 'Shops', href: '#shops', zh: '商店', img: '/images/sidebar/sidebar_shop.jpg' },
+  { label: 'Media', href: '#media', zh: '媒体', img: '/images/sidebar/sidebar_media.JPG' },
+  { label: 'Location', href: '#location', zh: '位置', img: '/images/sidebar/sidebar_location.png' },
+  { label: 'Contact', href: '#contact', zh: '联系', img: '/images/sidebar/sidebar_contact.jpg' },
 ];
 
 const socials = [
@@ -92,13 +92,10 @@ export default function Navbar() {
   }, []);
 
   return (
-    <>
+    <div className="relative">
       {/* ─── The Red Thread Navbar ─── */}
-      <motion.nav
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.3 }}
-        className="fixed top-0 left-0 right-0 z-50"
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 animate-[fadeIn_1s_0.3s_both]"
       >
         {/* Scrolled: frosted bar with red accent bottom */}
         <motion.div
@@ -123,7 +120,7 @@ export default function Navbar() {
                 transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
               >
                 <img
-                  src="/images/header-logo.png"
+                  src={(scrolled || menuOpen) && !isDark ? '/images/footer-logo.png' : '/images/header-logo.png'}
                   alt="Dragon City"
                   className={`w-auto object-contain transition-all duration-500 ${
                     scrolled ? 'h-10 sm:h-11' : 'h-12 sm:h-14 md:h-16'
@@ -165,7 +162,7 @@ export default function Navbar() {
                 <button
                   onClick={() => setMapOpen(true)}
                   className={`hidden lg:flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all duration-500 cursor-pointer ${
-                    scrolled
+                    scrolled || menuOpen
                       ? 'bg-dragon text-white hover:bg-dragon-light hover:shadow-lg hover:shadow-dragon/20'
                       : 'bg-white/10 text-white hover:bg-white/15 border border-white/10'
                   }`}
@@ -178,7 +175,7 @@ export default function Navbar() {
                 <button
                   onClick={toggleTheme}
                   className={`w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 ${
-                    scrolled
+                    (scrolled || menuOpen)
                       ? isDark ? 'bg-white/10 hover:bg-white/15 text-white/70 hover:text-white' : 'bg-black/5 hover:bg-black/10 text-black/50 hover:text-black'
                       : 'bg-white/10 hover:bg-white/15 text-white/70 hover:text-white'
                   }`}
@@ -195,16 +192,16 @@ export default function Navbar() {
                 >
                   <span className={`text-sm font-semibold tracking-wide transition-colors duration-300 ${
                     lang === 'en'
-                      ? scrolled && !isDark ? 'text-black' : 'text-white'
-                      : scrolled && !isDark ? 'text-black/30 hover:text-black/50' : 'text-white/30 hover:text-white/50'
+                      ? (scrolled || menuOpen) && !isDark ? 'text-black' : 'text-white'
+                      : (scrolled || menuOpen) && !isDark ? 'text-black/30 hover:text-black/50' : 'text-white/30 hover:text-white/50'
                   }`}>
                     EN
                   </span>
-                  <span className={`text-xs select-none ${scrolled && !isDark ? 'text-black/15' : 'text-white/15'}`}>/</span>
-                  <span className={`text-sm font-semibold transition-colors duration-300 ${
+                  <span className={`text-xs select-none ${(scrolled || menuOpen) && !isDark ? 'text-black/15' : 'text-white/15'}`}>/</span>
+                  <span className={`text-base font-semibold transition-colors duration-300 -translate-y-0.5 ${
                     lang === 'ar'
-                      ? scrolled && !isDark ? 'text-black' : 'text-white'
-                      : scrolled && !isDark ? 'text-black/30 hover:text-black/50' : 'text-white/30 hover:text-white/50'
+                      ? (scrolled || menuOpen) && !isDark ? 'text-black' : 'text-white'
+                      : (scrolled || menuOpen) && !isDark ? 'text-black/30 hover:text-black/50' : 'text-white/30 hover:text-white/50'
                   }`}>
                     عربي
                   </span>
@@ -214,7 +211,7 @@ export default function Navbar() {
                 <button
                   onClick={() => setMenuOpen(!menuOpen)}
                   className={`group flex items-center gap-3 pl-4 pr-5 py-3 rounded-full transition-all duration-300 cursor-pointer ${
-                    scrolled && !isDark
+                    (scrolled || menuOpen) && !isDark
                       ? 'text-black hover:text-black hover:bg-black/5'
                       : 'text-white hover:text-white hover:bg-white/8'
                   }`}
@@ -248,7 +245,7 @@ export default function Navbar() {
 
 {/* Red accent bottom border removed */}
         </motion.div>
-      </motion.nav>
+      </nav>
 
       {/* ─── Cinematic Fullscreen Menu ─── */}
       <AnimatePresence>
@@ -285,7 +282,7 @@ export default function Navbar() {
             <div className="relative h-full flex flex-col lg:flex-row pt-24 sm:pt-28 overflow-hidden">
 
               {/* LEFT PANEL: Navigation (60%) */}
-              <div className="w-full lg:w-[60%] lg:shrink-0 flex flex-col justify-center px-6 sm:px-10 md:px-16 lg:px-20 pb-8 lg:pb-0 overflow-y-auto scrollbar-hide">
+              <div className="relative w-full lg:w-[60%] lg:shrink-0 flex flex-col justify-center px-6 sm:px-10 md:px-16 lg:px-20 pb-8 lg:pb-0 overflow-y-auto scrollbar-hide">
                 <div className="max-w-175">
                   <motion.p
                     initial={{ opacity: 0, y: 20 }}
@@ -311,7 +308,7 @@ export default function Navbar() {
                         }}
                         onMouseEnter={() => handleLinkHover(i)}
                         onMouseLeave={() => setHoveredLink(null)}
-                        className="border-b border-white/4 first:border-t"
+                        className={`border-b first:border-t ${isDark ? 'border-white/4' : 'border-black/6'}`}
                       >
                         <a
                           href={link.href}
@@ -416,15 +413,15 @@ export default function Navbar() {
                     />
                   </AnimatePresence>
 
-                  {/* Overlays */}
-                  <div className={`absolute inset-0 bg-linear-to-l from-transparent via-transparent ${isDark ? 'to-[#050505]/80' : 'to-[#faf9f7]/80'}`} />
-                  <div className={`absolute inset-0 bg-linear-to-t ${isDark ? 'from-[#050505] via-[#050505]/30' : 'from-[#faf9f7] via-[#faf9f7]/30'} to-transparent`} />
-                  <div className={`absolute inset-0 bg-linear-to-b ${isDark ? 'from-[#050505]/60' : 'from-[#faf9f7]/60'} via-transparent to-transparent`} />
+                  {/* Overlays — always dark so white text stays readable */}
+                  <div className="absolute inset-0 bg-linear-to-l from-transparent via-transparent to-black/70" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-transparent" />
 
                   {/* Chinese pattern overlay */}
                   <div
-                    className="absolute inset-0 opacity-20 pointer-events-none bg-cover bg-center"
-                    style={{ backgroundImage: 'url(/images/chinese-pattern-bg.jpg)', mixBlendMode: 'screen' }}
+                    className="absolute inset-0 opacity-10 pointer-events-none bg-cover bg-center"
+                    style={{ backgroundImage: 'url(/images/chinese-pattern-bg.jpg)', mixBlendMode: 'overlay' }}
                   />
 
                   {/* Image label */}
@@ -472,7 +469,7 @@ export default function Navbar() {
                       <a
                         href="#location"
                         onClick={() => setMenuOpen(false)}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 hover:bg-white/10 text-white/70 hover:text-white text-xs font-semibold transition-all duration-300"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/20 hover:bg-white/10 text-white/80 hover:text-white text-xs font-semibold transition-all duration-300"
                       >
                         <MapPin className="w-3.5 h-3.5" />
                         Directions
@@ -488,7 +485,7 @@ export default function Navbar() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.2, delay: 0.3 }}
-              className="absolute bottom-8 left-8 font-chinese text-[180px] xl:text-[240px] text-white/1.5 leading-none select-none pointer-events-none hidden lg:block"
+              className={`absolute bottom-8 left-8 font-chinese text-[180px] xl:text-[240px] leading-none select-none pointer-events-none hidden lg:block ${isDark ? 'text-white/1.5' : 'text-black/4'}`}
             >
               龙城
             </motion.div>
@@ -579,6 +576,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }

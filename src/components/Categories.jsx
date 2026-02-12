@@ -65,7 +65,7 @@ const categories = [
 export default function Categories() {
   const { isDark } = useTheme();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: false, margin: '-100px' });
 
   return (
     <section id="shops" className="relative py-32 overflow-hidden" ref={ref}>
@@ -92,7 +92,7 @@ export default function Categories() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className={`text-4xl md:text-5xl lg:text-7xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
+                className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
               >
                 Explore Our{' '}
                 <span className={isDark ? 'text-white/30' : 'text-black/25'}>Categories</span>
