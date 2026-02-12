@@ -92,10 +92,13 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className="relative">
+    <>
       {/* ─── The Red Thread Navbar ─── */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 animate-[fadeIn_1s_0.3s_both]"
+      <motion.nav
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.3 }}
+        className="fixed top-0 left-0 right-0 z-50"
       >
         {/* Scrolled: frosted bar with red accent bottom */}
         <motion.div
@@ -245,7 +248,7 @@ export default function Navbar() {
 
 {/* Red accent bottom border removed */}
         </motion.div>
-      </nav>
+      </motion.nav>
 
       {/* ─── Cinematic Fullscreen Menu ─── */}
       <AnimatePresence>
@@ -576,6 +579,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }

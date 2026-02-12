@@ -42,7 +42,7 @@ const slides = [
 const SLIDE_DURATION = 6000;
 const SWIPE_THRESHOLD = 50;
 
-export default function Hero() {
+export default function Hero({ loading }) {
   const { isDark } = useTheme();
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
@@ -107,25 +107,35 @@ export default function Hero() {
     dragStartX.current = null;
   }, []);
 
+  // Start video playback after loader finishes
+  useEffect(() => {
+    if (!loading && slides[current].video && videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch(() => {});
+      setVideoPlaying(true);
+      setIsPaused(false);
+    }
+  }, [loading]);
+
   // Reset video state when returning to video slide
   useEffect(() => {
+    if (loading) return;
     if (slides[current].video) {
       setVideoPlaying(true);
       setIsPaused(false);
       if (videoRef.current) {
         videoRef.current.currentTime = 0;
-
         videoRef.current.play().catch(() => {});
       }
     }
-  }, [current]);
+  }, [current, loading]);
 
   useEffect(() => {
-    if (isPaused || isHovered) return;
+    if (loading || isPaused || isHovered) return;
     const duration = slides[current].video ? 180000 : SLIDE_DURATION; // 3 min for video, 6s for images
     const timer = setInterval(nextSlide, duration);
     return () => clearInterval(timer);
-  }, [isPaused, isHovered, nextSlide, current]);
+  }, [loading, isPaused, isHovered, nextSlide, current]);
 
   const toggleVideo = useCallback(() => {
     if (videoRef.current) {
@@ -170,13 +180,11 @@ export default function Hero() {
             <video
               ref={videoRef}
               src={slide.video}
-              autoPlay
               muted
               loop
               playsInline
               onLoadedMetadata={(e) => {
                 e.target.currentTime = 0;
-
               }}
               className="w-full h-full object-cover"
             />
