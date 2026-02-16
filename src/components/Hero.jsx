@@ -39,7 +39,7 @@ const slides = [
   },
 ];
 
-const SLIDE_DURATION = 6000;
+const SLIDE_DURATION = 8000;
 const SWIPE_THRESHOLD = 50;
 
 export default function Hero({ loading }) {
@@ -132,8 +132,7 @@ export default function Hero({ loading }) {
 
   useEffect(() => {
     if (loading || isPaused || isHovered) return;
-    const duration = slides[current].video ? 180000 : SLIDE_DURATION; // 3 min for video, 6s for images
-    const timer = setInterval(nextSlide, duration);
+    const timer = setInterval(nextSlide, SLIDE_DURATION);
     return () => clearInterval(timer);
   }, [loading, isPaused, isHovered, nextSlide, current]);
 
@@ -195,12 +194,12 @@ export default function Hero({ loading }) {
       </AnimatePresence>
 
       {/* Overlays */}
-      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-black/20" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/25 to-black/5" />
       {/* Top vignette — blends navbar area into the image */}
       <div
         className="absolute inset-x-0 top-0 h-105 pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 18%, rgba(0,0,0,0.35) 38%, rgba(0,0,0,0.18) 58%, rgba(0,0,0,0.06) 78%, transparent 100%)',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.28) 18%, rgba(0,0,0,0.15) 38%, rgba(0,0,0,0.06) 58%, rgba(0,0,0,0.02) 78%, transparent 100%)',
         }}
       />
 
@@ -251,7 +250,7 @@ export default function Hero({ loading }) {
       </motion.div>
 
       {/* Full-screen black scrim behind content */}
-      <div className="absolute inset-0 bg-black/40 z-5" />
+      <div className="absolute inset-0 bg-black/15 z-5" />
 
       {/* Main content - positioned at bottom */}
       <motion.div style={{ opacity }} className="absolute bottom-0 left-0 right-0 z-10 pb-10 md:pb-14">
@@ -279,7 +278,7 @@ export default function Hero({ loading }) {
                 </div>
 
                 {/* Title */}
-                <div className="mb-4 md:mb-6">
+                <div className="mb-3 md:mb-4">
                   <h1
                     className={`font-brush font-bold leading-[0.9] tracking-tight text-white ${isVideoSlide ? 'text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[90px]' : 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl'}`}
                     style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5), 0 4px 40px rgba(0,0,0,0.3)' }}
@@ -298,7 +297,7 @@ export default function Hero({ loading }) {
 
                 {/* Description */}
                 <p
-                  className={`text-xs sm:text-sm md:text-base text-white/80 max-w-lg leading-relaxed mb-6 md:mb-8 ${isVideoSlide ? 'mx-auto' : ''}`}
+                  className={`text-xs sm:text-sm md:text-base text-white/80 max-w-lg leading-relaxed mb-4 md:mb-5 ${isVideoSlide ? 'mx-auto' : ''}`}
                   style={{ textShadow: '0 1px 8px rgba(0,0,0,0.5), 0 2px 16px rgba(0,0,0,0.3)' }}
                 >
                   {slide.desc}
@@ -371,7 +370,7 @@ export default function Hero({ loading }) {
                   className="absolute top-0 left-0 h-1 rounded-full bg-dragon origin-left"
                   style={{
                     animationName: (isPaused || isHovered) ? "none" : "slide-progress",
-                    animationDuration: `${slides[current].video ? 180000 : SLIDE_DURATION}ms`,
+                    animationDuration: `${SLIDE_DURATION}ms`,
                     animationTimingFunction: "linear",
                     animationFillMode: "forwards",
                     animationPlayState: isHovered ? "paused" : "running",
@@ -383,16 +382,6 @@ export default function Hero({ loading }) {
         </div>
       </div>
 
-      {/* Scroll indicator - hidden on mobile */}
-      <motion.a href="#about" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }} className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 hidden md:flex flex-col items-center gap-2 cursor-pointer">
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          className="w-5 h-8 rounded-full border border-white/15 flex items-start justify-center pt-1.5"
-        >
-          <div className="w-1 h-1.5 rounded-full bg-dragon/60" />
-        </motion.div>
-      </motion.a>
     </section>
   );
 }

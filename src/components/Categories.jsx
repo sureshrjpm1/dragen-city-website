@@ -130,7 +130,7 @@ export default function Categories() {
                 />
 
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 group-hover:from-black/90 transition-all duration-500" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-black/10 group-hover:from-black/95 group-hover:via-black/55 transition-all duration-500" />
 
                 {/* Chinese watermark */}
                 <span className="absolute top-4 right-4 font-chinese text-2xl md:text-3xl text-white/[0.08] group-hover:text-white/[0.15] transition-colors duration-500">

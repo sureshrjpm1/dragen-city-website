@@ -45,7 +45,7 @@ export default function Experience() {
   const isInView = useInView(ref, { once: false, margin: '-100px' });
 
   return (
-    <section className="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden" ref={ref}>
+    <section id="experience" className="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden" ref={ref}>
       <div className="absolute inset-0 chinese-pattern" />
       <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent ${isDark ? 'via-white/10' : 'via-black/10'} to-transparent`} />
 
