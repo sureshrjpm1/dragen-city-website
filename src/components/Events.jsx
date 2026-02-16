@@ -247,7 +247,7 @@ export default function Events() {
                 </div>
 
                 {/* Text */}
-                <div className={`p-5 md:p-6 ${isDark ? 'bg-white/2' : 'bg-black/2'}`}>
+                <div className={`p-5 md:p-6 backdrop-blur-md ${isDark ? 'bg-white/3' : 'bg-black/3'}`}>
                   <h3 className={`text-base md:text-lg font-display font-bold ${isDark ? 'text-white/85' : 'text-[#1a1a1a]'} group-hover:text-gold transition-colors duration-300 leading-snug mb-3 line-clamp-2`}>
                     {item.title}
                   </h3>

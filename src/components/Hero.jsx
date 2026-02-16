@@ -199,7 +199,7 @@ export default function Hero({ loading }) {
       <div
         className="absolute inset-x-0 top-0 h-105 pointer-events-none"
         style={{
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.28) 18%, rgba(0,0,0,0.15) 38%, rgba(0,0,0,0.06) 58%, rgba(0,0,0,0.02) 78%, transparent 100%)',
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.55) 15%, rgba(0,0,0,0.35) 35%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.05) 75%, transparent 100%)',
         }}
       />
 

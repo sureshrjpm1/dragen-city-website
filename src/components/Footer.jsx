@@ -103,7 +103,7 @@ export default function Footer() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8 }}
-              className={`pt-16 md:pt-20 pb-16 md:pb-20 border-b ${isDark ? 'border-white/6' : 'border-black/8'}`}
+              className={`pt-10 md:pt-12 pb-16 md:pb-20 border-b ${isDark ? 'border-white/6' : 'border-black/8'}`}
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-end">
                 {/* Left: Big heading */}

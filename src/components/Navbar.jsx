@@ -396,7 +396,8 @@ export default function Navbar() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 40 }}
                 transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                className="hidden lg:flex lg:w-[40%] lg:shrink-0 relative flex-col overflow-hidden"
+                className="hidden lg:flex lg:w-[40%] lg:shrink-0 relative flex-col overflow-hidden -mt-28"
+                style={{ height: 'calc(100% + 7rem)' }}
               >
                 {/* Vertical divider thread */}
                 <div className="absolute left-0 top-0 bottom-0 w-px bg-linear-to-b from-transparent via-dragon/20 to-transparent" />
