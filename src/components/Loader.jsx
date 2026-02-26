@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '../context/ThemeContext';
 
 const VIDEO_SRC = '/videos/hero-video.mp4';
 
 export default function Loader({ onComplete }) {
+  const { isDark } = useTheme();
   const [progress, setProgress] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
@@ -74,7 +76,7 @@ export default function Loader({ onComplete }) {
         <motion.div
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#070707] overflow-hidden"
+          className={`fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden ${isDark ? 'bg-[#070707]' : 'bg-[#faf9f7]'}`}
         >
           {/* Subtle radial glow */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(203,51,59,0.06)_0%,transparent_70%)]" />
@@ -99,10 +101,10 @@ export default function Loader({ onComplete }) {
 
           {/* Floating Chinese characters — background */}
           <div className="absolute inset-0 pointer-events-none select-none overflow-hidden">
-            <span className="absolute top-[15%] left-[10%] font-chinese text-7xl text-white/[0.02] loader-float-1">龙</span>
-            <span className="absolute top-[60%] right-[12%] font-chinese text-6xl text-white/[0.02] loader-float-2">城</span>
-            <span className="absolute bottom-[20%] left-[20%] font-chinese text-5xl text-white/[0.02] loader-float-3">巴</span>
-            <span className="absolute top-[35%] right-[25%] font-chinese text-8xl text-white/[0.015] loader-float-1">林</span>
+            <span className={`absolute top-[15%] left-[10%] font-chinese text-7xl loader-float-1 ${isDark ? 'text-white/[0.02]' : 'text-black/[0.04]'}`}>龙</span>
+            <span className={`absolute top-[60%] right-[12%] font-chinese text-6xl loader-float-2 ${isDark ? 'text-white/[0.02]' : 'text-black/[0.04]'}`}>城</span>
+            <span className={`absolute bottom-[20%] left-[20%] font-chinese text-5xl loader-float-3 ${isDark ? 'text-white/[0.02]' : 'text-black/[0.04]'}`}>巴</span>
+            <span className={`absolute top-[35%] right-[25%] font-chinese text-8xl loader-float-1 ${isDark ? 'text-white/[0.015]' : 'text-black/[0.03]'}`}>林</span>
           </div>
 
           {/* Center content */}
@@ -119,7 +121,7 @@ export default function Loader({ onComplete }) {
                 <div className="w-[180px] h-[180px] md:w-[220px] md:h-[220px] rounded-full border border-dragon/10 loader-spin-slow" />
               </div>
               <div className="absolute inset-0 -m-10 flex items-center justify-center">
-                <div className="w-[220px] h-[220px] md:w-[260px] md:h-[260px] rounded-full border border-white/[0.03] loader-spin-reverse" />
+                <div className={`w-[220px] h-[220px] md:w-[260px] md:h-[260px] rounded-full border loader-spin-reverse ${isDark ? 'border-white/[0.03]' : 'border-black/[0.06]'}`} />
               </div>
 
               {/* Dragon ornament dots on ring */}
@@ -133,7 +135,7 @@ export default function Loader({ onComplete }) {
               </div>
 
               <img
-                src="/images/logo_v2_dark.png"
+                src={isDark ? '/images/logo_v2_dark.png' : '/images/logo_v2_light.png'}
                 alt="Dragon City"
                 className="h-28 md:h-36 w-auto object-contain relative z-10 loader-logo-glow"
               />
@@ -144,7 +146,7 @@ export default function Loader({ onComplete }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-[10px] tracking-[0.4em] uppercase text-white/15"
+              className={`text-[10px] tracking-[0.4em] uppercase ${isDark ? 'text-white/15' : 'text-black/20'}`}
             >
               Dragon City Bahrain
             </motion.p>
@@ -159,18 +161,18 @@ export default function Loader({ onComplete }) {
           >
             {/* Big percentage text */}
             <div className="relative mb-5 select-none">
-              <span className="text-7xl md:text-8xl lg:text-[120px] font-display font-bold text-white/[0.07] tabular-nums tracking-tight leading-none">
+              <span className={`text-7xl md:text-8xl lg:text-[120px] font-display font-bold tabular-nums tracking-tight leading-none ${isDark ? 'text-white/[0.07]' : 'text-black/[0.08]'}`}>
                 {Math.round(progress)}
               </span>
-              <span className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-white/[0.05] ml-1">%</span>
+              <span className={`text-2xl md:text-3xl lg:text-4xl font-display font-bold ml-1 ${isDark ? 'text-white/[0.05]' : 'text-black/[0.06]'}`}>%</span>
             </div>
 
             {/* Chinese flanks + progress bar row */}
             <div className="w-full flex items-center">
-              <span className="font-chinese text-[10px] text-dragon/20 pl-6 hidden sm:block">龙城</span>
+              <span className={`font-chinese text-[10px] pl-6 hidden sm:block ${isDark ? 'text-dragon/20' : 'text-dragon/30'}`}>龙城</span>
               <div className="flex-1 mx-0 sm:mx-4">
                 {/* Progress bar */}
-                <div className="w-full h-px bg-white/[0.05]">
+                <div className={`w-full h-px ${isDark ? 'bg-white/[0.05]' : 'bg-black/[0.08]'}`}>
                   <div
                     className="h-full bg-linear-to-r from-dragon via-dragon to-gold transition-all duration-150 ease-out relative"
                     style={{ width: `${progress}%` }}
@@ -179,7 +181,7 @@ export default function Loader({ onComplete }) {
                   </div>
                 </div>
               </div>
-              <span className="font-chinese text-[10px] text-gold/15 pr-6 hidden sm:block">巴林</span>
+              <span className={`font-chinese text-[10px] pr-6 hidden sm:block ${isDark ? 'text-gold/15' : 'text-gold/25'}`}>巴林</span>
             </div>
 
             {/* Subtle bottom padding */}
