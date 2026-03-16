@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&display=swap');
 @import "tailwindcss";
 
 @font-face {
@@ -42,39 +43,39 @@
 
 /* ─── Theme Variables ─── */
 :root {
-  --t-bg: #050505;
-  --t-bg-alt: #080808;
-  --t-bg-section: #070707;
-  --t-bg-card: #060606;
-  --t-text: #ffffff;
-  --t-text-secondary: rgba(255,255,255,0.5);
-  --t-text-muted: rgba(255,255,255,0.3);
-  --t-border: rgba(255,255,255,0.08);
-  --t-surface: rgba(255,255,255,0.03);
-  --t-scrollbar-track: #0a0a0a;
-  --t-overlay-input: rgba(255,255,255,0.04);
-  --t-footer-gradient: linear-gradient(to bottom, #050505 0%, #0a0406 15%, #120508 40%, #1a060a 65%, #22070c 85%, #2a080e 100%);
-  --t-navbar-bg: rgba(10,10,10,0.55);
-  --t-menu-bg: rgba(5,5,5,0.97);
-  --t-watermark-opacity: 0.015;
-}
-
-[data-theme="light"] {
-  --t-bg: #faf9f7;
-  --t-bg-alt: #f2f1ef;
-  --t-bg-section: #f5f4f2;
+  --t-bg: #ffffff;
+  --t-bg-alt: #f8f8f8;
+  --t-bg-section: #fafafa;
   --t-bg-card: #ffffff;
   --t-text: #1a1a1a;
   --t-text-secondary: rgba(0,0,0,0.55);
   --t-text-muted: rgba(0,0,0,0.3);
-  --t-border: rgba(0,0,0,0.1);
-  --t-surface: rgba(0,0,0,0.04);
-  --t-scrollbar-track: #f0f0f0;
-  --t-overlay-input: rgba(0,0,0,0.04);
-  --t-footer-gradient: linear-gradient(to bottom, #f5f4f2 0%, #ede8e4 15%, #e8e0da 40%, #e2d8d0 65%, #ddd0c8 85%, #d8c8be 100%);
-  --t-navbar-bg: rgba(250,249,247,0.65);
-  --t-menu-bg: rgba(250,249,247,0.97);
-  --t-watermark-opacity: 0.04;
+  --t-border: rgba(0,0,0,0.08);
+  --t-surface: rgba(0,0,0,0.03);
+  --t-scrollbar-track: #f5f5f5;
+  --t-overlay-input: rgba(0,0,0,0.03);
+  --t-footer-gradient: linear-gradient(to bottom, #ffffff 0%, #f8f6f4 15%, #f2eeea 40%, #ece6e0 65%, #e6ddd6 85%, #e0d6cc 100%);
+  --t-navbar-bg: rgba(255,255,255,0.7);
+  --t-menu-bg: rgba(255,255,255,0.97);
+  --t-watermark-opacity: 0.03;
+}
+
+[data-theme="light"] {
+  --t-bg: #ffffff;
+  --t-bg-alt: #f8f8f8;
+  --t-bg-section: #fafafa;
+  --t-bg-card: #ffffff;
+  --t-text: #1a1a1a;
+  --t-text-secondary: rgba(0,0,0,0.55);
+  --t-text-muted: rgba(0,0,0,0.3);
+  --t-border: rgba(0,0,0,0.08);
+  --t-surface: rgba(0,0,0,0.03);
+  --t-scrollbar-track: #f5f5f5;
+  --t-overlay-input: rgba(0,0,0,0.03);
+  --t-footer-gradient: linear-gradient(to bottom, #ffffff 0%, #f8f6f4 15%, #f2eeea 40%, #ece6e0 65%, #e6ddd6 85%, #e0d6cc 100%);
+  --t-navbar-bg: rgba(255,255,255,0.7);
+  --t-menu-bg: rgba(255,255,255,0.97);
+  --t-watermark-opacity: 0.03;
 }
 
 @layer base {

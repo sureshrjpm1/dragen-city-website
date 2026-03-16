@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Marquee from './components/Marquee';
 import About from './components/About';
-import WhyDragonCity from './components/WhyDragonCity';
 import Categories from './components/Categories';
-import Experience from './components/Experience';
 import LocationHours from './components/LocationHours';
 import Events from './components/Events';
 import Gallery from './components/Gallery';
@@ -32,11 +29,8 @@ function App() {
       <div className={`relative ${loading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'}`}>
         <Navbar />
         <Hero loading={loading} />
-        <Marquee />
         <About />
-        <WhyDragonCity />
         <Categories />
-        <Experience />
         <Events />
         <LocationHours />
         <Gallery />

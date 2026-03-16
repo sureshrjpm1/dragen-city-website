@@ -1,12 +1,12 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { Play, X, ShoppingBag, Utensils, Sparkles, MapPin } from 'lucide-react';
+import { Play, X, ArrowRight } from 'lucide-react';
 
 const stats = [
-  { value: 799, suffix: '+', label: 'Stores', icon: ShoppingBag },
-  { value: 55, suffix: 'K', label: 'Sqm Area', icon: MapPin },
-  { value: 22600, suffix: '+', label: 'Daily Visitors', icon: Sparkles },
-  { value: 10, suffix: 'th', label: 'Year', icon: Utensils },
+  { value: 799, suffix: '+', label: 'Retail & Wholesale Shops' },
+  { value: 55000, suffix: '+', label: 'Square Meters Area' },
+  { value: 22600, suffix: '+', label: 'Daily Visitors' },
+  { value: 10000, suffix: '+', label: 'Solar Panels Installed' },
 ];
 
 function AnimatedCounter({ value, suffix = '', isInView }) {
@@ -38,82 +38,137 @@ export default function About() {
   const [videoOpen, setVideoOpen] = useState(false);
 
   return (
-    <section id="about" className="relative bg-white overflow-hidden" ref={ref}>
-      <div className="px-6 md:px-12 lg:px-16 py-14 md:py-20">
-        <div className="max-w-[1400px] mx-auto">
+    <section id="about" className="relative overflow-hidden" ref={ref}>
 
-        {/* Top row — headline left + video thumbnail right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12 md:mb-16">
+      {/* ── Full-width background image ── */}
+      <div className="absolute inset-0">
+        <img
+          src="/images/dragon-city-aerial.jpg"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+        {/* White overlay — stronger on left for text readability */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `
+              linear-gradient(to right, white 25%, rgba(255,255,255,0.92) 40%, rgba(255,255,255,0.7) 55%, rgba(255,255,255,0.3) 75%, transparent 100%),
+              linear-gradient(to bottom, rgba(255,255,255,0.6) 0%, transparent 15%, transparent 75%, rgba(255,255,255,0.95) 100%)
+            `,
+          }}
+        />
+        {/* Top edge blend */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-white to-transparent" />
+        {/* Bottom edge blend */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+      </div>
 
-          {/* Left — text */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-7"
-          >
-            <p className="text-xs tracking-[0.2em] uppercase text-dragon/70 font-medium mb-4">About Dragon City</p>
-            <h2 className="text-2xl md:text-3xl lg:text-[2.5rem] font-display font-bold text-[#1a1a1a] leading-tight mb-4">
-              Bahrain's Largest Wholesale & Retail Destination
-            </h2>
-            <p className="text-sm md:text-base text-black/45 leading-relaxed max-w-xl">
-              A world-class commercial center with 799+ stores featuring electronics, fashion, furniture, and more — elegantly infused with Chinese-inspired architecture in the heart of Diyar Al Muharraq.
-            </p>
-          </motion.div>
+      {/* ── Content ── */}
+      <div className="relative z-10 px-6 md:px-12 lg:px-16 py-16 md:py-24">
+        <div className="max-w-350 mx-auto">
 
-          {/* Right — compact video thumbnail */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="lg:col-span-5"
-          >
-            <div
-              className="relative rounded-2xl overflow-hidden aspect-video cursor-pointer group"
-              onClick={() => setVideoOpen(true)}
-            >
-              <img
-                src="/images/dragon-city-aerial.jpg"
-                alt="Dragon City Bahrain"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-black/15 group-hover:bg-black/25 transition-colors duration-300" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  <Play className="w-5 h-5 text-dragon ml-0.5" fill="currentColor" />
-                </div>
-              </div>
-              <div className="absolute bottom-3 left-3">
-                <span className="text-[10px] font-medium text-white/80 bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">Watch Video</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+          {/* Text content — left side */}
+          <div className="lg:max-w-[50%]">
 
-        {/* Stats row — clean cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          {stats.map((stat, i) => (
+            {/* Label */}
             <motion.div
-              key={stat.label}
+              initial={{ opacity: 0, y: 12 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5 }}
+              className="flex items-center gap-4 mb-6"
+            >
+              <div className="w-8 h-px bg-dragon" />
+              <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-dragon">
+                About Us
+              </span>
+              <span className="text-[11px] text-black/25 font-medium">
+                关于我们
+              </span>
+            </motion.div>
+
+            {/* Heading */}
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
-              className="group relative bg-[#f8f7f5] hover:bg-dragon rounded-xl p-5 md:p-6 transition-all duration-400 cursor-default"
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="font-display text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-[#1a1a1a] leading-[1.15] mb-6"
             >
-              <div className="flex items-center gap-2.5 mb-3">
-                <stat.icon className="w-4 h-4 text-dragon/50 group-hover:text-white/70 transition-colors duration-400" />
-                <span className="text-[10px] tracking-wider uppercase text-black/30 group-hover:text-white/60 transition-colors duration-400">{stat.label}</span>
-              </div>
-              <p className="text-2xl md:text-3xl font-display font-bold text-[#1a1a1a] group-hover:text-white transition-colors duration-400">
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} isInView={isInView} />
+              The Largest Trading Centre in the Kingdom
+            </motion.h2>
+
+            {/* Description */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="space-y-4 mb-8"
+            >
+              <p className="text-[15px] text-black/55 leading-[1.8]">
+                Dragon City Bahrain (DCB) is a large-scale commercial center encapsulating wholesale and retail of Chinese products. Elegantly infused with Chinese inspired architecture, Dragon City serves as a major trading hub for Bahrain and the surrounding regions.
+              </p>
+              <p className="text-[15px] text-black/55 leading-[1.8]">
+                With a diverse range of products catering to both individual consumers and wholesale businessmen, Dragon City is the largest wholesale and retail trading centre in the Kingdom.
               </p>
             </motion.div>
-          ))}
-        </div>
+
+            {/* CTA buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex items-center gap-5"
+            >
+              <a
+                href="#shops"
+                className="group inline-flex items-center gap-2.5 text-sm font-semibold text-dragon hover:text-dragon-dark transition-colors duration-300"
+              >
+                Explore our stores
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+              </a>
+
+              <button
+                onClick={() => setVideoOpen(true)}
+                className="flex items-center gap-2.5 group cursor-pointer"
+              >
+                <div className="w-9 h-9 rounded-full bg-dragon/10 flex items-center justify-center group-hover:bg-dragon/20 transition-colors">
+                  <Play className="w-3.5 h-3.5 text-dragon ml-0.5" fill="currentColor" />
+                </div>
+                <span className="text-sm font-medium text-black/50">Play Video</span>
+              </button>
+            </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* Video Popup */}
+      {/* ── Stats row ── */}
+      <div className="relative z-10 px-6 md:px-12 lg:px-16 pb-12 md:pb-16">
+        <div className="max-w-350 mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.4 }}
+            className="pt-6 border-t border-black/8"
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-y-6 gap-x-6">
+              {stats.map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.45 + i * 0.08 }}
+                >
+                  <p className="text-3xl md:text-4xl font-display font-bold text-[#1a1a1a] mb-1">
+                    <AnimatedCounter value={stat.value} suffix={stat.suffix} isInView={isInView} />
+                  </p>
+                  <p className="text-xs text-black/40 font-medium">{stat.label}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* ── Video Modal ── */}
       <AnimatePresence>
         {videoOpen && (
           <motion.div
