@@ -89,12 +89,27 @@ export default function Categories() {
   };
 
   return (
-    <section id="shops" className="relative py-16 md:py-24 overflow-hidden bg-white" ref={ref}>
-      {/* Subtle top border */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/5 to-transparent" />
+    <section id="shops" className="relative py-10 md:py-14 overflow-hidden bg-white" ref={ref}>
+      {/* Decorative top line */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
+        transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+        className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-dragon/15 to-transparent origin-center"
+      />
+
+      {/* Chinese watermark */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 0.02 } : { opacity: 0 }}
+        transition={{ duration: 1.5 }}
+        className="absolute top-1/2 right-10 -translate-y-1/2 text-[14rem] font-bold text-dragon leading-none pointer-events-none select-none hidden lg:block"
+      >
+        购物
+      </motion.div>
 
       {/* Header */}
-      <div className="px-6 md:px-12 lg:px-16 mb-10 md:mb-14">
+      <div className="px-6 md:px-12 lg:px-16 mb-8 md:mb-10">
         <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -103,10 +118,10 @@ export default function Categories() {
           >
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-px bg-dragon" />
-              <span className="text-xs tracking-[0.25em] uppercase text-dragon font-medium">
+              <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-dragon">
                 Categories
               </span>
-              <span className="text-xs text-black/25 font-light">探索分类</span>
+              <span className="text-[11px] text-black/20">探索分类</span>
             </div>
 
             <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-display font-bold text-[#1a1a1a] leading-tight">
@@ -177,7 +192,7 @@ export default function Categories() {
             style={{ scrollSnapAlign: 'start' }}
           >
             {/* Image container */}
-            <div className="relative h-48 md:h-56 overflow-hidden rounded-2xl mb-4">
+            <div className="relative h-48 md:h-56 overflow-hidden rounded-2xl mb-3">
               <img
                 src={cat.image}
                 alt={cat.name}
@@ -186,13 +201,8 @@ export default function Categories() {
               {/* Dark overlay on hover */}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500" />
 
-              {/* Bottom gradient blend */}
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(to top, white 0%, rgba(255,255,255,0.6) 15%, transparent 35%)',
-                }}
-              />
+              {/* Subtle bottom overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
 
               {/* Chinese character watermark */}
               <div className="absolute top-4 right-4 text-white/20 text-4xl font-light pointer-events-none group-hover:text-white/40 transition-colors duration-500">
@@ -203,14 +213,21 @@ export default function Categories() {
               <div className="absolute top-4 left-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 -translate-y-2 group-hover:translate-y-0 transition-all duration-400">
                 <ArrowRight className="w-4 h-4 text-dragon" />
               </div>
-            </div>
 
-            {/* Text below image */}
-            <div className="px-1">
-              <h3 className="text-lg md:text-xl font-display font-bold text-[#1a1a1a] group-hover:text-dragon transition-colors duration-300">
-                {cat.name}
-              </h3>
-              <p className="text-xs text-black/40 mt-0.5">{cat.chinese}</p>
+              {/* Text on image — glass effect */}
+              <div
+                className="absolute bottom-0 left-0 right-0 px-4 py-3 rounded-b-2xl"
+                style={{
+                  background: 'rgba(255,255,255,0.35)',
+                  backdropFilter: 'blur(5px)',
+                  WebkitBackdropFilter: 'blur(5px)',
+                  borderTop: '1px solid rgba(255,255,255,0.4)',
+                }}
+              >
+                <h3 className="text-base md:text-lg font-display font-bold text-black">
+                  {cat.name}
+                </h3>
+              </div>
             </div>
           </motion.a>
         ))}

@@ -72,6 +72,10 @@ export default function Events() {
     <section id="events" className="relative py-14 md:py-20 px-6 md:px-12 lg:px-16 overflow-hidden" ref={ref}>
       <div className="absolute inset-0 bg-[#fafaf9]" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/8 to-transparent" />
+      {/* Chinese watermark */}
+      <div className="absolute top-8 right-12 text-[11rem] font-bold text-dragon/3 leading-none pointer-events-none select-none hidden lg:block">
+        活动
+      </div>
 
       <div className="max-w-350 mx-auto relative">
         {/* Header */}
@@ -85,6 +89,7 @@ export default function Events() {
             >
               <div className="w-10 h-px bg-dragon" />
               <span className="text-xs tracking-[0.25em] uppercase text-dragon/70 font-medium">Events & News</span>
+              <span className="text-xs text-black/25">活动与新闻</span>
             </motion.div>
 
             <motion.h2
@@ -141,7 +146,7 @@ export default function Events() {
             {/* Featured Event — large hero card */}
             {featured && (
               <a href="#" className="group block mb-5">
-                <div className="relative rounded-2xl overflow-hidden aspect-[21/9] md:aspect-[3/1]">
+                <div className="relative rounded-2xl overflow-hidden aspect-video md:aspect-21/8">
                   <img
                     src={featured.image}
                     alt={featured.title}
