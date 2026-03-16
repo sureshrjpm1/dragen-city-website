@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+
 
 const galleryImages = [
   {
@@ -39,21 +39,16 @@ const galleryImages = [
 export default function Gallery() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: '-100px' });
-  const { isDark } = useTheme();
 
   return (
-    <section className="relative py-32 overflow-hidden" id="media">
-      <div className={`absolute inset-0 ${isDark ? 'bg-[#060606]' : 'bg-[#f8f7f5]'}`} />
+    <section className="relative py-14 md:py-20 overflow-hidden" id="media">
+      <div className={`absolute inset-0 bg-[#f8f7f5]`} />
       <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-dragon/20 to-transparent" />
 
-      {/* Chinese watermark */}
-      <div className={`absolute top-20 left-10 font-chinese text-[200px] ${isDark ? 'text-white/[0.04]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
-        画廊
-      </div>
 
       <div ref={ref} className="relative">
         {/* Section header */}
-        <div className="px-6 md:px-12 lg:px-20 mb-16">
+        <div className="px-6 md:px-12 lg:px-16 mb-10">
           <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
             <div>
               <motion.div
@@ -71,10 +66,10 @@ export default function Gallery() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.1 }}
-                className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
+                className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold text-[#1a1a1a]`}
               >
                 Explore the{' '}
-                <span className={isDark ? 'text-white/25' : 'text-black/25'}>Experience</span>
+                <span className="text-black/25">Experience</span>
               </motion.h2>
             </div>
 
@@ -83,7 +78,7 @@ export default function Gallery() {
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
               href="#"
-              className={`group flex items-center gap-3 px-6 py-3 rounded-full border ${isDark ? 'border-white/10 text-white/60 hover:text-white' : 'border-black/10 text-black/55 hover:text-[#1a1a1a]'} text-sm font-medium hover:border-dragon/30 transition-all`}
+              className={`group flex items-center gap-3 px-6 py-3 rounded-full border border-black/10 text-black/55 hover:text-[#1a1a1a] text-sm font-medium hover:border-dragon/30 transition-all`}
             >
               View all
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -92,9 +87,9 @@ export default function Gallery() {
         </div>
 
         {/* Bento grid — 4 cols, 2 rows, fully filled */}
-        <div className="px-6 md:px-12 lg:px-20">
+        <div className="px-6 md:px-12 lg:px-16">
           <div className="max-w-[1400px] mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-[250px_250px] md:grid-rows-[280px_280px] lg:grid-rows-[320px_320px] gap-3 md:gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-[180px_180px] md:grid-rows-[220px_220px] lg:grid-rows-[260px_260px] gap-3 md:gap-4">
               {/* 1 — Large hero (2 cols, 2 rows) */}
               <GalleryCard img={galleryImages[0]} i={0} isInView={isInView} className="col-span-2 row-span-2" />
               {/* 2 — Top right small */}
@@ -108,7 +103,7 @@ export default function Gallery() {
             </div>
 
             {/* Second row — 3 equal columns */}
-            <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-[220px] md:grid-rows-[260px] lg:grid-rows-[300px] gap-3 md:gap-4 mt-3 md:mt-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-[180px] md:grid-rows-[200px] lg:grid-rows-[240px] gap-3 md:gap-4 mt-3 md:mt-4">
               <GalleryCard img={galleryImages[5]} i={5} isInView={isInView} className="col-span-1" />
               <GalleryCard
                 img={{ src: '/images/dragon-city-aerial.jpg', title: 'Aerial View', subtitle: 'Dragon City Complex' }}

@@ -1,13 +1,12 @@
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Play, X } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+import { Play, X, ShoppingBag, Utensils, Sparkles, MapPin } from 'lucide-react';
 
 const stats = [
-  { value: 799, suffix: '+', label: 'Retail & Wholesale Shops', zh: '商店' },
-  { value: 55000, suffix: '+', label: 'Square Meters Area', zh: '平方米' },
-  { value: 22600, suffix: '+', label: 'Daily Visitors', zh: '每日访客' },
-  { value: 10000, suffix: '+', label: 'Solar Panels Installed', zh: '太阳能板' },
+  { value: 799, suffix: '+', label: 'Stores', icon: ShoppingBag },
+  { value: 55, suffix: 'K', label: 'Sqm Area', icon: MapPin },
+  { value: 22600, suffix: '+', label: 'Daily Visitors', icon: Sparkles },
+  { value: 10, suffix: 'th', label: 'Year', icon: Utensils },
 ];
 
 function AnimatedCounter({ value, suffix = '', isInView }) {
@@ -18,208 +17,103 @@ function AnimatedCounter({ value, suffix = '', isInView }) {
     if (isInView && !hasAnimated.current) {
       hasAnimated.current = true;
       const startTime = performance.now();
-      const duration = 2500;
-
+      const duration = 2000;
       const animate = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const eased = 1 - Math.pow(1 - progress, 4);
         setCount(Math.round(eased * value));
-
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        }
+        if (progress < 1) requestAnimationFrame(animate);
       };
-
       requestAnimationFrame(animate);
     }
   }, [isInView, value]);
 
-  const formatted = count.toLocaleString();
-
-  return (
-    <span>
-      {formatted}
-      {suffix}
-    </span>
-  );
+  return <span>{count.toLocaleString()}{suffix}</span>;
 }
 
 export default function About() {
-  const { isDark } = useTheme();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, margin: '-100px' });
-  const statsRef = useRef(null);
-  const statsInView = useInView(statsRef, { once: false, margin: '-50px' });
+  const isInView = useInView(ref, { once: false, margin: '-50px' });
   const [videoOpen, setVideoOpen] = useState(false);
 
   return (
-    <section id="about" className="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden">
-      <div className="absolute inset-0 chinese-pattern" />
+    <section id="about" className="relative bg-white overflow-hidden" ref={ref}>
+      <div className="px-6 md:px-12 lg:px-16 py-14 md:py-20">
+        <div className="max-w-[1400px] mx-auto">
 
-      {/* Decorative Chinese character */}
-      <div className={`absolute top-20 right-10 font-chinese text-[280px] ${isDark ? 'text-white/[0.04]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
-        龙
-      </div>
+        {/* Top row — headline left + video thumbnail right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12 md:mb-16">
 
-      <div ref={ref} className="max-w-[1400px] mx-auto relative">
-        {/* Section eyebrow - full width */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="flex items-center gap-3 mb-6"
-        >
-          <div className="w-12 h-px bg-gradient-to-r from-dragon to-gold" />
-          <span className="text-xs tracking-[0.3em] uppercase text-dragon font-medium">About Us</span>
-          <span className="font-chinese text-dragon/30 text-xs">关于我们</span>
-        </motion.div>
-
-        {/* Large heading - full width */}
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className={`text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'} leading-[1.1] mb-16 max-w-4xl`}
-        >
-          The Largest Trading Centre{' '}
-          <span className="text-gradient-dragon">in the Kingdom</span>
-        </motion.h2>
-
-        {/* Asymmetric content: text left (narrow) + image right (wide) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 mb-20">
-          {/* Text - 5 cols */}
+          {/* Left — text */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-5 flex flex-col justify-center"
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-7"
           >
-            <p className={`text-base md:text-lg ${isDark ? 'text-white/50' : 'text-black/55'} leading-relaxed mb-6`}>
-              Dragon City Bahrain (DCB) is a large-scale commercial center encapsulating
-              wholesale and retail of Chinese products. Elegantly infused with Chinese
-              inspired architecture, Dragon City serves as a major trading hub for
-              Bahrain and the surrounding regions.
+            <p className="text-xs tracking-[0.2em] uppercase text-dragon/70 font-medium mb-4">About Dragon City</p>
+            <h2 className="text-2xl md:text-3xl lg:text-[2.5rem] font-display font-bold text-[#1a1a1a] leading-tight mb-4">
+              Bahrain's Largest Wholesale & Retail Destination
+            </h2>
+            <p className="text-sm md:text-base text-black/45 leading-relaxed max-w-xl">
+              A world-class commercial center with 799+ stores featuring electronics, fashion, furniture, and more — elegantly infused with Chinese-inspired architecture in the heart of Diyar Al Muharraq.
             </p>
-
-            <p className={`text-base md:text-lg ${isDark ? 'text-white/50' : 'text-black/55'} leading-relaxed mb-8`}>
-              With a diverse range of products catering to both individual consumers
-              and wholesale businessmen, Dragon City is the largest wholesale and retail
-              trading centre in the Kingdom.
-            </p>
-
-            <a
-              href="#shops"
-              className="group inline-flex items-center gap-3 text-dragon hover:text-dragon-light text-sm font-semibold transition-colors w-fit"
-            >
-              Explore our stores
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
           </motion.div>
 
-          {/* Image - 7 cols */}
+          {/* Right — compact video thumbnail */}
           <motion.div
-            initial={{ opacity: 0, x: 60, scale: 0.95 }}
-            animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="lg:col-span-7 relative"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="lg:col-span-5"
           >
-            <div className="relative rounded-3xl overflow-hidden aspect-[16/10] group/video cursor-pointer" onClick={() => setVideoOpen(true)}>
+            <div
+              className="relative rounded-2xl overflow-hidden aspect-video cursor-pointer group"
+              onClick={() => setVideoOpen(true)}
+            >
               <img
                 src="/images/dragon-city-aerial.jpg"
                 alt="Dragon City Bahrain"
-                className="w-full h-full object-cover group-hover/video:scale-105 transition-transform duration-700"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-
-              {/* Play button — Chinese-styled */}
+              <div className="absolute inset-0 bg-black/15 group-hover:bg-black/25 transition-colors duration-300" />
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative">
-                  {/* Outer rotating diamond border */}
-                  <motion.div
-                    animate={{ rotate: [0, 360] }}
-                    transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                    className="absolute -inset-5 border border-dragon/30 rounded-sm rotate-45"
-                  />
-                  {/* Glow pulse */}
-                  <motion.div
-                    animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0, 0.3] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                    className="absolute -inset-3 bg-dragon/20 rounded-full"
-                  />
-                  {/* Main button */}
-                  <div className="relative w-18 h-18 md:w-22 md:h-22 rounded-full bg-dragon/90 backdrop-blur-sm border-2 border-white/20 flex items-center justify-center shadow-2xl shadow-dragon/40 group-hover/video:bg-dragon group-hover/video:scale-110 transition-all duration-300">
-                    <Play className="w-7 h-7 md:w-8 md:h-8 text-white ml-1" fill="white" />
-                  </div>
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Play className="w-5 h-5 text-dragon ml-0.5" fill="currentColor" />
                 </div>
               </div>
+              <div className="absolute bottom-3 left-3">
+                <span className="text-[10px] font-medium text-white/80 bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">Watch Video</span>
+              </div>
             </div>
-
-            {/* Floating accent card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="absolute -bottom-8 -left-6 md:-left-10 bg-dragon p-5 md:p-6 rounded-2xl shadow-2xl shadow-dragon/30 z-10"
-            >
-              <p className="font-chinese text-xl text-white/60 mb-0.5">龙城</p>
-              <p className="text-3xl md:text-4xl font-display font-bold text-white">Since 2015</p>
-              <p className="text-xs text-white/50 mt-1">Diyar Al Muharraq</p>
-            </motion.div>
-
-            {/* Decorative corners */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 border border-dragon/15 rounded-2xl" />
-            <motion.div
-              animate={{ y: [-5, 5, -5] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-10 -right-10 w-28 h-28 opacity-15 hidden lg:block"
-            >
-              <img src="/images/ornaments/red-ornament.webp" alt="" className="w-full h-full object-contain" />
-            </motion.div>
           </motion.div>
         </div>
 
-        {/* Stats row - full width with animated counters */}
-        <motion.div
-          ref={statsRef}
-          initial={{ opacity: 0, y: 40 }}
-          animate={statsInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
-        >
+        {/* Stats row — clean cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 30 }}
-              animate={statsInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className={`group relative p-6 md:p-8 rounded-2xl ${isDark ? 'bg-white/[0.02] border border-white/[0.06] hover:bg-white/[0.04]' : 'bg-black/[0.03] border border-black/[0.08] hover:bg-black/[0.05]'} hover:border-dragon/20 transition-all duration-500`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
+              className="group relative bg-[#f8f7f5] hover:bg-dragon rounded-xl p-5 md:p-6 transition-all duration-400 cursor-default"
             >
-              {/* Chinese label */}
-              <span className="absolute top-3 right-4 font-chinese text-base text-dragon/10 group-hover:text-dragon/25 transition-colors duration-500">
-                {stat.zh}
-              </span>
-
-              {/* Counter */}
-              <p className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'} mb-2 group-hover:text-dragon transition-colors duration-500`}>
-                <AnimatedCounter
-                  value={stat.value}
-                  suffix={stat.suffix}
-                  isInView={statsInView}
-                />
+              <div className="flex items-center gap-2.5 mb-3">
+                <stat.icon className="w-4 h-4 text-dragon/50 group-hover:text-white/70 transition-colors duration-400" />
+                <span className="text-[10px] tracking-wider uppercase text-black/30 group-hover:text-white/60 transition-colors duration-400">{stat.label}</span>
+              </div>
+              <p className="text-2xl md:text-3xl font-display font-bold text-[#1a1a1a] group-hover:text-white transition-colors duration-400">
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} isInView={isInView} />
               </p>
-
-              {/* Label */}
-              <p className={`text-xs md:text-sm ${isDark ? 'text-white/40' : 'text-black/45'} tracking-wide`}>{stat.label}</p>
-
-              {/* Hover gradient */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-t from-dragon/5 to-transparent pointer-events-none" />
             </motion.div>
           ))}
-        </motion.div>
+        </div>
+        </div>
       </div>
 
-      {/* Video Popup Modal */}
+      {/* Video Popup */}
       <AnimatePresence>
         {videoOpen && (
           <motion.div
@@ -230,16 +124,12 @@ export default function About() {
             className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
             onClick={() => setVideoOpen(false)}
           >
-            {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" />
-
-            {/* Modal content */}
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden shadow-2xl shadow-dragon/20 border border-white/10"
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="relative w-full max-w-5xl aspect-video rounded-2xl overflow-hidden shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <iframe
@@ -250,20 +140,12 @@ export default function About() {
                 className="w-full h-full"
               />
             </motion.div>
-
-            {/* Close button */}
             <button
               onClick={() => setVideoOpen(false)}
-              className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-dragon/80 hover:border-dragon transition-all duration-300 cursor-pointer z-10"
+              className="absolute top-6 right-6 w-11 h-11 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 cursor-pointer z-10"
             >
               <X className="w-5 h-5" />
             </button>
-
-            {/* Chinese decorative corner accents */}
-            <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-dragon/40 rounded-tl-sm pointer-events-none" />
-            <div className="absolute top-4 right-20 w-8 h-8 border-t-2 border-r-2 border-dragon/40 rounded-tr-sm pointer-events-none" />
-            <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-dragon/40 rounded-bl-sm pointer-events-none" />
-            <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-dragon/40 rounded-br-sm pointer-events-none" />
           </motion.div>
         )}
       </AnimatePresence>

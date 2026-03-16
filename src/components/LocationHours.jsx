@@ -1,42 +1,22 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { MapPin, Navigation, Clock, ExternalLink, Map } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+
 
 export default function LocationHours() {
-  const { isDark } = useTheme();
+
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, margin: '-100px' });
 
   return (
-    <section id="location" className="relative py-32 px-6 md:px-12 lg:px-20 overflow-hidden" ref={ref}>
-      <div className={`absolute inset-0 ${isDark ? 'bg-[#070707]' : 'bg-[#f5f4f2]'}`} />
+    <section id="location" className="relative py-14 md:py-20 px-6 md:px-12 lg:px-16 overflow-hidden" ref={ref}>
+      <div className={`absolute inset-0 bg-[#f5f4f2]`} />
       <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-dragon/20 to-transparent" />
 
-      {/* Chinese watermark */}
-      <div className={`absolute top-20 left-10 font-chinese text-[180px] ${isDark ? 'text-white/[0.04]' : 'text-black/[0.04]'} leading-none select-none pointer-events-none hidden lg:block`}>
-        访问
-      </div>
-
-      {/* Chinese ornament — animated */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
-        animate={isInView ? { opacity: 0.12, scale: 1, rotate: 0 } : {}}
-        transition={{ duration: 2, delay: 0.5 }}
-        className="absolute -top-4 -right-6 md:-right-4 lg:right-0 w-40 md:w-56 h-40 md:h-56 pointer-events-none"
-      >
-        <motion.img
-          src="/images/ornaments/pale-ornament.webp"
-          alt=""
-          className="w-full h-full object-contain"
-          animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.05, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </motion.div>
 
       <div className="max-w-[1400px] mx-auto relative">
         {/* Section header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -45,7 +25,6 @@ export default function LocationHours() {
           >
             <div className="w-12 h-px bg-linear-to-r from-transparent to-dragon" />
             <span className="text-xs tracking-[0.3em] uppercase text-dragon font-medium">Plan Your Visit</span>
-            <span className="font-chinese text-dragon/30 text-xs">计划您的访问</span>
             <div className="w-12 h-px bg-linear-to-l from-transparent to-dragon" />
           </motion.div>
 
@@ -53,7 +32,7 @@ export default function LocationHours() {
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}
+            className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold text-[#1a1a1a]`}
           >
             Visit <span className="text-gradient-dragon">Us</span>
           </motion.h2>
@@ -65,7 +44,7 @@ export default function LocationHours() {
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-3 relative group rounded-3xl overflow-hidden min-h-[450px]"
+            className="lg:col-span-3 relative group rounded-3xl overflow-hidden min-h-[350px]"
           >
             <img
               src="/images/visit-us.jpg"
@@ -86,7 +65,6 @@ export default function LocationHours() {
                   <MapPin className="w-4 h-4 text-dragon" />
                 </div>
                 <span className="text-sm font-semibold text-dragon tracking-wider uppercase">Find Us</span>
-                <span className="font-chinese text-dragon/40 text-xs ml-1">找到我们</span>
               </div>
 
               <h3 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
@@ -145,7 +123,6 @@ export default function LocationHours() {
                     <Clock className="w-4 h-4 text-white/80" />
                   </div>
                   <span className="text-sm font-semibold text-white/80 tracking-wider uppercase">Opening Hours</span>
-                  <span className="font-chinese text-white/30 text-xs ml-1">营业时间</span>
                 </div>
 
                 <div className="flex-1 flex flex-col justify-center space-y-6">
