@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Send, ArrowUpRight, MapPin, Clock } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 
 const navLinks = [
   { label: 'Home', href: '#home' },
@@ -10,7 +9,6 @@ const navLinks = [
   { label: 'Events', href: '#events' },
   { label: 'Gallery', href: '#gallery' },
   { label: 'Location', href: '#location' },
-  { label: 'Contact', href: '#contact' },
 ];
 
 const shopCategories = [
@@ -62,7 +60,6 @@ export default function Footer() {
   const isInView = useInView(ref, { once: false, margin: '-50px' });
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
-  const { isDark } = useTheme();
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -74,262 +71,192 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden" ref={ref}>
-      <div
-        className="relative"
-        style={{
-          background: isDark
-            ? 'linear-gradient(to bottom, #050505 0%, #0a0406 15%, #120508 40%, #1a060a 65%, #22070c 85%, #2a080e 100%)'
-            : 'linear-gradient(to bottom, #f5f4f2 0%, #ede8e4 15%, #e8e0da 40%, #e2d8d0 65%, #ddd0c8 85%, #d8c8be 100%)',
-        }}
-      >
-        {/* Subtle pattern bg */}
-        <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none bg-cover bg-center"
-          style={{ backgroundImage: 'url(/images/chinese-pattern-bg.jpg)' }}
-        />
+    <footer className="relative bg-[#fafaf9] overflow-hidden" ref={ref}>
+      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-black/8 to-transparent" />
 
-        {/* Radial red glow from bottom */}
-        <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-96 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at center bottom, rgba(203,51,59,0.08) 0%, transparent 70%)' }}
-        />
+      {/* Chinese watermark */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 text-[18rem] font-bold text-black/2 leading-none pointer-events-none select-none hidden lg:block">
+        龙城
+      </div>
 
-        <div className="relative px-6 md:px-12 lg:px-20">
-          <div className="max-w-350 mx-auto">
+      <div className="relative px-6 md:px-12 lg:px-16 max-w-350 mx-auto">
 
-            {/* ─── Top CTA Section ─── */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8 }}
-              className={`pt-10 md:pt-12 pb-16 md:pb-20 border-b ${isDark ? 'border-white/6' : 'border-black/8'}`}
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-end">
-                {/* Left: Big heading */}
-                <div>
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-px bg-linear-to-r from-dragon to-gold" />
-                    <span className="text-[10px] tracking-[0.4em] uppercase text-dragon/60 font-medium">Stay Connected</span>
-                    <span className={`font-chinese text-xs ${isDark ? 'text-dragon/25' : 'text-dragon/25'}`}>保持联系</span>
-                  </div>
-                  <h2 className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-tight ${isDark ? 'text-white' : 'text-[#1a1a1a]'}`}>
-                    Don't miss out on<br />
-                    <span className={isDark ? 'text-white/30' : 'text-black/25'}>{`what's happening`}</span>
-                  </h2>
-                </div>
-
-                {/* Right: Newsletter */}
-                <div className="lg:max-w-md lg:ml-auto">
-                  <p className={`text-sm mb-5 leading-relaxed ${isDark ? 'text-white/40' : 'text-black/50'}`}>
-                    Subscribe to our newsletter for exclusive offers, new store openings, and upcoming events at Dragon City Bahrain.
-                  </p>
-                  <form onSubmit={handleSubscribe}>
-                    <div className="relative flex items-center">
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email"
-                        required
-                        className={`w-full px-5 py-4 pr-14 border rounded-xl text-sm focus:outline-none focus:border-dragon/40 transition-all duration-300 ${
-                          isDark
-                            ? 'bg-white/4 border-white/10 text-white placeholder-white/30 focus:bg-white/6'
-                            : 'bg-black/4 border-black/10 text-[#1a1a1a] placeholder-black/30 focus:bg-black/6'
-                        }`}
-                      />
-                      <button
-                        type="submit"
-                        className="absolute right-2 w-10 h-10 rounded-lg bg-dragon hover:bg-dragon-light flex items-center justify-center transition-all duration-300 cursor-pointer hover:shadow-lg hover:shadow-dragon/20"
-                      >
-                        <Send className="w-4 h-4 text-white" />
-                      </button>
-                    </div>
-                    {subscribed && (
-                      <motion.p
-                        initial={{ opacity: 0, y: 4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-xs text-green-400/70 mt-3 flex items-center gap-1.5"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                        Subscribed successfully
-                      </motion.p>
-                    )}
-                  </form>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* ─── Main Footer Grid ─── */}
-            <motion.div
-              initial={{ opacity: 0, y: 25 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className={`py-14 md:py-16 border-b ${isDark ? 'border-white/6' : 'border-black/8'}`}
-            >
-              <div className="grid grid-cols-2 md:grid-cols-12 gap-10 md:gap-8">
-                {/* Logo + Info */}
-                <div className="col-span-2 md:col-span-4">
-                  <img
-                    src="/images/logo_v2_dark.png"
-                    alt="Dragon City Bahrain"
-                    className="h-[118px] md:h-[134px] w-auto object-contain mb-2"
-                  />
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-start gap-2.5">
-                      <MapPin className="w-3.5 h-3.5 text-dragon/60 mt-0.5 shrink-0" />
-                      <p className={`text-xs leading-relaxed ${isDark ? 'text-white/40' : 'text-black/50'}`}>
-                        Building 4-45, Road 5617, Block 456<br />
-                        Diyar Al Muharraq, Bahrain
-                      </p>
-                    </div>
-                    <div className="flex items-start gap-2.5">
-                      <Clock className="w-3.5 h-3.5 text-dragon/60 mt-0.5 shrink-0" />
-                      <p className={`text-xs leading-relaxed ${isDark ? 'text-white/40' : 'text-black/50'}`}>
-                        Sat – Wed: 10 AM – 10 PM<br />
-                        Thu – Fri: 10 AM – 12 AM
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Social icons */}
-                  <div className="flex items-center gap-2">
-                    {socials.map((s) => (
-                      <a
-                        key={s.name}
-                        href={s.url}
-                        className={`w-9 h-9 rounded-lg flex items-center justify-center hover:border-dragon/30 hover:bg-dragon/10 transition-all duration-300 ${
-                          isDark
-                            ? 'bg-white/4 border border-white/6 text-white/40 hover:text-white'
-                            : 'bg-black/4 border border-black/8 text-black/40 hover:text-black'
-                        }`}
-                        title={s.name}
-                      >
-                        {s.icon}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Navigation */}
-                <div className="col-span-1 md:col-span-2">
-                  <h6 className={`text-[10px] font-semibold tracking-[0.3em] uppercase mb-5 ${isDark ? 'text-white/25' : 'text-black/20'}`}>
-                    Navigate
-                  </h6>
-                  <ul className="space-y-3">
-                    {navLinks.map((link) => (
-                      <li key={link.label}>
-                        <a
-                          href={link.href}
-                          className={`group flex items-center gap-2 text-sm transition-colors duration-300 ${
-                            isDark ? 'text-white/50 hover:text-white' : 'text-black/55 hover:text-black'
-                          }`}
-                        >
-                          {link.label}
-                          <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-50 group-hover:translate-x-0 transition-all duration-300" />
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Categories */}
-                <div className="col-span-1 md:col-span-2">
-                  <h6 className={`text-[10px] font-semibold tracking-[0.3em] uppercase mb-5 ${isDark ? 'text-white/25' : 'text-black/20'}`}>
-                    Categories
-                  </h6>
-                  <ul className="space-y-3">
-                    {shopCategories.map((cat) => (
-                      <li key={cat}>
-                        <a
-                          href="#shops"
-                          className={`group flex items-center gap-2 text-sm transition-colors duration-300 ${
-                            isDark ? 'text-white/50 hover:text-white' : 'text-black/55 hover:text-black'
-                          }`}
-                        >
-                          {cat}
-                          <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-50 group-hover:translate-x-0 transition-all duration-300" />
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Quick Links */}
-                <div className="col-span-2 md:col-span-4">
-                  <h6 className={`text-[10px] font-semibold tracking-[0.3em] uppercase mb-5 ${isDark ? 'text-white/25' : 'text-black/20'}`}>
-                    Quick Links
-                  </h6>
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-3">
-                    {[
-                      { label: 'Mall Map', href: '#' },
-                      { label: 'Careers', href: '#' },
-                      { label: 'Events', href: '#events' },
-                      { label: 'Feedback', href: '#contact' },
-                      { label: 'Latest News', href: '#' },
-                      { label: 'Parking Info', href: '#location' },
-                      { label: 'Opening Hours', href: '#location' },
-                      { label: 'Directions', href: '#location' },
-                    ].map((link) => (
-                      <a
-                        key={link.label}
-                        href={link.href}
-                        className={`text-sm transition-colors duration-300 ${
-                          isDark ? 'text-white/50 hover:text-white' : 'text-black/55 hover:text-black'
-                        }`}
-                      >
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* ─── Giant Brand Wordmark ─── */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className={`py-10 md:py-12 border-b overflow-hidden ${isDark ? 'border-white/6' : 'border-black/8'}`}
-            >
-              <div className="flex items-center justify-center gap-6">
-                <div className="hidden md:block w-16 h-px bg-linear-to-r from-transparent to-dragon/20" />
-                <h3
-                  className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-brush font-bold tracking-tighter text-center select-none whitespace-nowrap"
-                  style={{
-                    color: 'transparent',
-                    WebkitTextStroke: isDark ? '1px rgba(255,255,255,0.06)' : '1px rgba(0,0,0,0.08)',
-                  }}
-                >
-                  DRAGON CITY
-                </h3>
-                <div className="hidden md:block w-16 h-px bg-linear-to-l from-transparent to-dragon/20" />
-              </div>
-              <p className={`text-center font-chinese text-lg mt-2 select-none ${isDark ? 'text-dragon/15' : 'text-dragon/25'}`}>龙城巴林</p>
-            </motion.div>
-
-            {/* ─── Bottom bar ─── */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className={`flex flex-col sm:flex-row items-center justify-between gap-4 py-6 text-[11px] ${isDark ? 'text-white/25' : 'text-black/25'}`}
-            >
-              <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
-                <span>&copy; 2026 Dragon City Bahrain. All rights reserved.</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <a href="#" className={`transition-colors ${isDark ? 'hover:text-white/60' : 'hover:text-black/60'}`}>Privacy Policy</a>
-                <span className={`w-px h-3 ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
-                <a href="#" className={`transition-colors ${isDark ? 'hover:text-white/60' : 'hover:text-black/60'}`}>Terms of Use</a>
-                <span className={`w-px h-3 ${isDark ? 'bg-white/10' : 'bg-black/10'}`} />
-                <a href="#" className={`transition-colors ${isDark ? 'hover:text-white/60' : 'hover:text-black/60'}`}>Sitemap</a>
-              </div>
-            </motion.div>
-
+        {/* ── Newsletter CTA ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+          className="py-12 md:py-14 border-b border-black/8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center"
+        >
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-8 h-px bg-dragon" />
+              <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-dragon">Newsletter</span>
+              <span className="text-[11px] text-black/20">保持联系</span>
+            </div>
+            <h3 className="text-2xl md:text-3xl font-display font-bold text-[#1a1a1a] leading-tight">
+              Don't miss what's<br />
+              <span className="text-black/25">happening at Dragon City</span>
+            </h3>
           </div>
-        </div>
+          <div>
+            <p className="text-sm text-black/45 mb-4 leading-relaxed">
+              Subscribe for exclusive offers, new store openings, and upcoming events.
+            </p>
+            <form onSubmit={handleSubscribe}>
+              <div className="relative flex items-center">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  className="w-full px-5 py-3.5 pr-14 border border-black/10 rounded-xl text-sm bg-white text-[#1a1a1a] placeholder-black/30 focus:outline-none focus:border-dragon/40 transition-all duration-300"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-2 w-9 h-9 rounded-lg bg-dragon hover:bg-dragon/90 flex items-center justify-center transition-all duration-300 cursor-pointer"
+                >
+                  <Send className="w-3.5 h-3.5 text-white" />
+                </button>
+              </div>
+              {subscribed && (
+                <motion.p
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-xs text-green-600/70 mt-2.5 flex items-center gap-1.5"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                  Subscribed successfully
+                </motion.p>
+              )}
+            </form>
+          </div>
+        </motion.div>
+
+        {/* ── Main Grid ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="py-12 md:py-14 border-b border-black/8 grid grid-cols-2 md:grid-cols-12 gap-10 md:gap-8"
+        >
+          {/* Logo + info */}
+          <div className="col-span-2 md:col-span-4">
+            <img
+              src="/images/logo_v2_light.png"
+              alt="Dragon City Bahrain"
+              className="h-32 w-auto object-contain mb-4"
+            />
+            <div className="space-y-2.5 mb-6">
+              <div className="flex items-start gap-2">
+                <MapPin className="w-3.5 h-3.5 text-dragon/50 mt-0.5 shrink-0" />
+                <p className="text-xs text-black/45 leading-relaxed">
+                  Building 4-45, Road 5617, Block 456<br />
+                  Diyar Al Muharraq, Bahrain
+                </p>
+              </div>
+              <div className="flex items-start gap-2">
+                <Clock className="w-3.5 h-3.5 text-dragon/50 mt-0.5 shrink-0" />
+                <p className="text-xs text-black/45 leading-relaxed">
+                  Sat – Wed: 10 AM – 10 PM<br />
+                  Thu – Fri: 10 AM – 12 AM
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {socials.map((s) => (
+                <a
+                  key={s.name}
+                  href={s.url}
+                  className="w-8 h-8 rounded-lg bg-black/4 border border-black/8 text-black/35 flex items-center justify-center hover:border-dragon/30 hover:text-dragon hover:bg-dragon/5 transition-all duration-300"
+                  title={s.name}
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigate */}
+          <div className="col-span-1 md:col-span-2">
+            <h6 className="text-[10px] font-semibold tracking-[0.3em] uppercase text-black/20 mb-4">Navigate</h6>
+            <ul className="space-y-2.5">
+              {navLinks.map((link) => (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    className="group flex items-center gap-1.5 text-sm text-black/50 hover:text-[#1a1a1a] transition-colors duration-300"
+                  >
+                    {link.label}
+                    <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-40 transition-opacity duration-300" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Categories */}
+          <div className="col-span-1 md:col-span-2">
+            <h6 className="text-[10px] font-semibold tracking-[0.3em] uppercase text-black/20 mb-4">Categories</h6>
+            <ul className="space-y-2.5">
+              {shopCategories.map((cat) => (
+                <li key={cat}>
+                  <a
+                    href="#shops"
+                    className="text-sm text-black/50 hover:text-[#1a1a1a] transition-colors duration-300"
+                  >
+                    {cat}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Quick Links */}
+          <div className="col-span-2 md:col-span-4">
+            <h6 className="text-[10px] font-semibold tracking-[0.3em] uppercase text-black/20 mb-4">Quick Links</h6>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-2.5">
+              {[
+                { label: 'Mall Map', href: '#' },
+                { label: 'Careers', href: '#' },
+                { label: 'Events', href: '#events' },
+                { label: 'Feedback', href: '#contact' },
+                { label: 'Latest News', href: '#' },
+                { label: 'Parking Info', href: '#location' },
+                { label: 'Opening Hours', href: '#location' },
+                { label: 'Directions', href: '#location' },
+              ].map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm text-black/50 hover:text-[#1a1a1a] transition-colors duration-300"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+
+        {/* ── Bottom bar ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center justify-between gap-3 py-5 text-[11px] text-black/25"
+        >
+          <span>&copy; 2026 Dragon City Bahrain. All rights reserved.</span>
+          <div className="flex items-center gap-4">
+            <a href="#" className="hover:text-black/50 transition-colors">Privacy Policy</a>
+            <span className="w-px h-3 bg-black/10" />
+            <a href="#" className="hover:text-black/50 transition-colors">Terms of Use</a>
+            <span className="w-px h-3 bg-black/10" />
+            <a href="#" className="hover:text-black/50 transition-colors">Sitemap</a>
+          </div>
+        </motion.div>
+
       </div>
     </footer>
   );

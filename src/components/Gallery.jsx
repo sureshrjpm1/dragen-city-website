@@ -2,71 +2,79 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
-
-const galleryImages = [
+const posts = [
   {
     src: '/images/gallery/Center Court Upscaled.jpg',
-    title: 'Center Court',
-    subtitle: 'Heart of Dragon City',
+    caption: 'Center Court',
+    tag: '#DragonCityBahrain',
+    span: 'col-span-2 row-span-2',
   },
   {
     src: '/images/gallery/DC-NOV2025-8.jpg',
-    title: 'Interior',
-    subtitle: 'Dragon City Complex',
+    caption: 'Shopping Experience',
+    tag: '#Shopping',
+    span: '',
   },
   {
     src: '/images/gallery/FB8A8436.JPG',
-    title: 'Festive Decor',
-    subtitle: 'Cultural Celebrations',
+    caption: 'Cultural Celebrations',
+    tag: '#Culture',
+    span: '',
   },
   {
     src: '/images/gallery/DC-NOV2025-4.jpg',
-    title: 'Shopping Avenue',
-    subtitle: 'Shopping & Lifestyle',
+    caption: 'Fashion & Style',
+    tag: '#Fashion',
+    span: '',
   },
   {
     src: '/images/gallery/DC-NOV2025-1.jpg',
-    title: 'Grand Entrance',
-    subtitle: 'Iconic Landmark',
+    caption: 'Grand Entrance',
+    tag: '#DCB',
+    span: '',
   },
   {
     src: '/images/gallery/DC-NOV2025-9.jpg',
-    title: 'Food Court',
-    subtitle: 'Dining & Cuisine',
+    caption: 'Food Court',
+    tag: '#FoodCourt',
+    span: '',
   },
 ];
 
 export default function Gallery() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, margin: '-100px' });
+  const isInView = useInView(ref, { once: false, margin: '-80px' });
 
   return (
-    <section className="relative py-14 md:py-20 overflow-hidden" id="media">
-      <div className={`absolute inset-0 bg-[#f8f7f5]`} />
-      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-dragon/20 to-transparent" />
+    <section className="relative py-14 md:py-20 overflow-hidden bg-white" id="media" ref={ref}>
+      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-black/8 to-transparent" />
 
+      {/* Chinese watermark */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20rem] font-bold text-black/[0.015] leading-none pointer-events-none select-none hidden lg:block">
+        影
+      </div>
 
-      <div ref={ref} className="relative">
-        {/* Section header */}
-        <div className="px-6 md:px-12 lg:px-16 mb-10">
-          <div className="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6">
+      <div className="px-6 md:px-12 lg:px-16 relative">
+        <div className="max-w-350 mx-auto">
+
+          {/* Header */}
+          <div className="flex items-end justify-between mb-10">
             <div>
               <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5 }}
+                className="flex items-center gap-3 mb-4"
+              >
+                <div className="w-8 h-px bg-dragon" />
+                <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-dragon">Gallery</span>
+                <span className="text-[11px] text-black/20">画廊</span>
+              </motion.div>
+              <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6 }}
-                className="flex items-center gap-3 mb-6"
-              >
-                <div className="w-12 h-px bg-linear-to-r from-dragon to-gold" />
-                <span className="text-xs tracking-[0.3em] uppercase text-dragon font-medium">Gallery</span>
-                <span className="font-chinese text-dragon/30 text-xs">画廊</span>
-              </motion.div>
-
-              <motion.h2
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className={`text-3xl md:text-4xl lg:text-5xl font-display font-bold text-[#1a1a1a]`}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-[#1a1a1a]"
               >
                 Explore the{' '}
                 <span className="text-black/25">Experience</span>
@@ -76,98 +84,82 @@ export default function Gallery() {
             <motion.a
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
               href="#"
-              className={`group flex items-center gap-3 px-6 py-3 rounded-full border border-black/10 text-black/55 hover:text-[#1a1a1a] text-sm font-medium hover:border-dragon/30 transition-all`}
+              className="group hidden sm:flex items-center gap-2 text-sm font-medium text-black/45 hover:text-dragon transition-colors duration-300"
             >
               View all
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </motion.a>
           </div>
-        </div>
 
-        {/* Bento grid — 4 cols, 2 rows, fully filled */}
-        <div className="px-6 md:px-12 lg:px-16">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-[180px_180px] md:grid-rows-[220px_220px] lg:grid-rows-[260px_260px] gap-3 md:gap-4">
-              {/* 1 — Large hero (2 cols, 2 rows) */}
-              <GalleryCard img={galleryImages[0]} i={0} isInView={isInView} className="col-span-2 row-span-2" />
-              {/* 2 — Top right small */}
-              <GalleryCard img={galleryImages[1]} i={1} isInView={isInView} className="col-span-1 row-span-1" />
-              {/* 3 — Top far right */}
-              <GalleryCard img={galleryImages[2]} i={2} isInView={isInView} className="col-span-1 row-span-1" />
-              {/* 4 — Bottom right small */}
-              <GalleryCard img={galleryImages[3]} i={3} isInView={isInView} className="col-span-1 row-span-1" />
-              {/* 5 — Bottom far right */}
-              <GalleryCard img={galleryImages[4]} i={4} isInView={isInView} className="col-span-1 row-span-1" />
-            </div>
+          {/* Mosaic Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-1.5 h-96 md:h-110 rounded-2xl overflow-hidden">
 
-            {/* Second row — 3 equal columns */}
-            <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-[180px] md:grid-rows-[200px] lg:grid-rows-[240px] gap-3 md:gap-4 mt-3 md:mt-4">
-              <GalleryCard img={galleryImages[5]} i={5} isInView={isInView} className="col-span-1" />
-              <GalleryCard
-                img={{ src: '/images/dragon-city-aerial.jpg', title: 'Aerial View', subtitle: 'Dragon City Complex' }}
-                i={6}
-                isInView={isInView}
-                className="col-span-2 md:col-span-1"
+            {/* Large featured image — spans 2 cols & 2 rows */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.7 }}
+              className="col-span-2 row-span-2 relative overflow-hidden group cursor-pointer"
+            >
+              <img
+                src={posts[0].src}
+                alt={posts[0].caption}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
               />
-              <GalleryCard
-                img={{ src: '/images/visit-us.jpg', title: 'Grand Entrance', subtitle: 'Welcome to Dragon City' }}
-                i={7}
-                isInView={isInView}
-                className="col-span-2 md:col-span-1"
-              />
-            </div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-5 left-5 translate-y-3 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400">
+                <p className="text-white font-display font-bold text-lg">{posts[0].caption}</p>
+                <p className="text-white/60 text-xs mt-0.5">{posts[0].tag}</p>
+              </div>
+              {/* Dragon red bottom line */}
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-dragon scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
+            </motion.div>
+
+            {/* Remaining 4 images — each 1 col x 1 row */}
+            {posts.slice(1, 5).map((post, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.1 + i * 0.08 }}
+                className="relative overflow-hidden group cursor-pointer"
+              >
+                <img
+                  src={post.src}
+                  alt={post.caption}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/55 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                <div className="absolute bottom-3 left-3 translate-y-2 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                  <p className="text-white font-semibold text-xs leading-snug">{post.caption}</p>
+                  <p className="text-white/55 text-[10px] mt-0.5">{post.tag}</p>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-dragon scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
+              </motion.div>
+            ))}
+
           </div>
+
+          {/* Bottom Instagram handle */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="flex items-center justify-center gap-3 mt-8"
+          >
+            <div className="h-px bg-black/8 flex-1" />
+            <a href="#" className="flex items-center gap-2 text-sm text-black/40 hover:text-dragon transition-colors font-medium">
+              <span>@dragoncitybahrain</span>
+              <span className="text-black/20">·</span>
+              <span className="text-[11px]">Follow us on Instagram</span>
+            </a>
+            <div className="h-px bg-black/8 flex-1" />
+          </motion.div>
+
         </div>
       </div>
     </section>
-  );
-}
-
-function GalleryCard({ img, i, isInView, className }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40, scale: 0.95 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.7, delay: 0.1 + i * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
-      className={`group relative rounded-2xl overflow-hidden cursor-pointer ${className}`}
-    >
-      <img
-        src={img.src}
-        alt={img.title}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-      />
-
-      {/* Always-visible subtle gradient */}
-      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent" />
-
-      {/* Hover overlay */}
-      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      {/* Content */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
-        <div className="flex items-end justify-between gap-3">
-          <div className="translate-y-1 group-hover:translate-y-0 transition-transform duration-500">
-            <p className="text-base md:text-lg font-display font-bold text-white leading-tight">{img.title}</p>
-            <p className="text-xs text-white/50 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{img.subtitle}</p>
-          </div>
-
-          <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-500">
-            <ArrowRight className="w-3.5 h-3.5 text-white" />
-          </div>
-        </div>
-      </div>
-
-      {/* Corner index */}
-      <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <span className="text-[10px] font-mono text-white/40 bg-black/30 backdrop-blur-sm px-2 py-1 rounded-full">
-          {String(i + 1).padStart(2, '0')}
-        </span>
-      </div>
-
-      {/* Red accent line on hover */}
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-dragon via-dragon/60 to-transparent scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700 ease-out" />
-    </motion.div>
   );
 }
